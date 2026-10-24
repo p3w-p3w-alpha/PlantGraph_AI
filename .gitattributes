@@ -1,0 +1,6 @@
+# Preserve downloaded benchmark bytes and EPANET writer formatting for provenance.
+data/reference/*.csv -text -whitespace
+data/reference/*.INP -text -whitespace
+data/epanet/*.inp -text -whitespace
+*.png binary
+*.webm binary
