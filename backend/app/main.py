@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 
 ROOT=Path(__file__).resolve().parents[2]
 load_dotenv(ROOT/'.env')
@@ -102,7 +102,10 @@ for directory in ['pid','reference','uploads']:
 
 @app.get('/presentation', include_in_schema=False)
 def presentation_deck():
-    return FileResponse(ROOT/'docs'/'presentation.html')
+    return RedirectResponse('/presentation/')
+
+
+app.mount('/presentation', StaticFiles(directory=ROOT/'presentation', html=True), name='interactive-presentation')
 
 
 @app.get('/evidence/{filename}', include_in_schema=False)

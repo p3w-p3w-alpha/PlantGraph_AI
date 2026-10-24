@@ -1,0 +1,83 @@
+{
+  "assets": [
+    {
+      "file": "atlas_design.png",
+      "source": "artifacts/submission/normal/atlas_design.png",
+      "sha256": "b22ff6f7f27bc407fabbe84def75e7293899f7bbd3262a92ac1f738838c9d4c6"
+    },
+    {
+      "file": "atlas_graph.png",
+      "source": "artifacts/submission/normal/atlas_graph.png",
+      "sha256": "58869aa5a1a059b1f9e95daeaa072f87e4c81a2344c24fa056cec1fb2ab01839"
+    },
+    {
+      "file": "atlas_3d.png",
+      "source": "artifacts/submission/normal/atlas_3d.png",
+      "sha256": "f196346a0870e4a633d33918805fb76314105c99ae35319eac93dcd94788f076"
+    },
+    {
+      "file": "atlas_fault.png",
+      "source": "artifacts/submission/problematic/atlas_filter_3d.png",
+      "sha256": "6e423819126270c90ab865c371d6d4c49b977b3e3e5da8c7b4479354fc3c05c7"
+    },
+    {
+      "file": "atlas_comparison.png",
+      "source": "artifacts/submission/problematic/atlas_comparison.png",
+      "sha256": "e5b1f5d5966183b93672f05a713feb64797426d80d29aa91b5903d35b89a047c"
+    },
+    {
+      "file": "lowerfox_design.png",
+      "source": "artifacts/submission/normal/lowerfox_source_p107.png",
+      "sha256": "0e2777b3dfac6a7dd4bd52b8168ee0ca438e2f90657bd535a11de76a1787c959"
+    },
+    {
+      "file": "lowerfox_graph.png",
+      "source": "artifacts/submission/normal/lowerfox_graph.png",
+      "sha256": "911f09d73e9654ea9be558fcf0cc51ccb91fd0ecc95421d28e6392e463ee0e7f"
+    },
+    {
+      "file": "lowerfox_3d.png",
+      "source": "artifacts/submission/normal/lowerfox_3d.png",
+      "sha256": "ee3ae3534067709a5b320d771e66f2bd1d708fbc85a08dcf596dc9035da00bbf"
+    },
+    {
+      "file": "lowerfox_filter.png",
+      "source": "artifacts/submission/problematic/lowerfox_filter_3d.png",
+      "sha256": "69fc64d7067ab6cd74fe5ea062de26bae19ed340289af084c4a958c402ebecb5"
+    },
+    {
+      "file": "lowerfox_filter_comparison.png",
+      "source": "artifacts/submission/problematic/lowerfox_filter_comparison.png",
+      "sha256": "b4dc0902c9e70ca2c0ce8f160b824541cef4fe42b33af462d0ac2cdb4f4fbeda"
+    },
+    {
+      "file": "lowerfox_pump.png",
+      "source": "artifacts/submission/problematic/lowerfox_pump_3d.png",
+      "sha256": "962701a32509f462a234300b01c9812312f5be4fe30c8445b321f37135e1e5e5"
+    },
+    {
+      "file": "lowerfox_pump_comparison.png",
+      "source": "artifacts/submission/problematic/lowerfox_pump_comparison.png",
+      "sha256": "92d8d3b83ed9134b1fe20eb2090c27ba8f054ab174fccfa478d86edb48ad45ae"
+    },
+    {
+      "file": "gemma_extraction.png",
+      "source": "artifacts/submission/normal/lowerfox_gemma_extraction_review.png",
+      "sha256": "79399d2401b880c3468b8f9540d59327a4be5199bab9ed821a76823e9ee19a8f"
+    },
+    {
+      "file": "gemma_investigation.png",
+      "source": "artifacts/ai-investigation.png",
+      "sha256": "a2d1396a593ae2dca22773e7bc2f16a0479f342bef08e8290b548c81de82c16f"
+    },
+    {
+      "file": "plantgraph_demo.mp4",
+      "source": "artifacts/videos/plantgraph_demo.mp4",
+      "sha256": "359a1f4aedb4815973ab955bc9a488f9a253759cafb0b2c8153145e5880252de"
+    }
+  ],
+  "data": "All operational observations are computed EPANET results; no field measurements.",
+  "ai_evidence": "Only verified Gemma extraction and Atlas investigation images are included.",
+  "video": "89.8 second engineering workflow. No AI requests or cached AI replay in the video.",
+  "design_source": "Tetra Tech EC Lower Fox River O&M manual hosted by EPA, document376921 P107 PDF101; contractor rights retained."
+}

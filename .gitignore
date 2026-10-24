@@ -27,3 +27,7 @@ data/uploads/
 data/runtime/
 .DS_Store
 Hackaton context/
+
+.presentation_site/
+
+artifacts/presentation_qa/

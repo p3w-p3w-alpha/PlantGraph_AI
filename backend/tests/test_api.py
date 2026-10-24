@@ -62,3 +62,16 @@ def test_action_scenario_and_comparison(client):
 def test_hidden_files_are_not_served(client):
     assert client.get('/data/.env').status_code==404
     assert client.get('/data/pid/../../.env').status_code==404
+
+
+def test_interactive_presentation_and_seekable_video_are_served(client):
+    page=client.get('/presentation')
+    assert page.status_code==200
+    assert 'What we built' in page.text and 'Gemma reads the design' in page.text
+    assert client.get('/presentation/styles.css').status_code==200
+    image=client.get('/presentation/assets/gemma_extraction.png')
+    assert image.status_code==200 and image.headers['content-type']=='image/png'
+    clip=client.get('/presentation/assets/plantgraph_demo.mp4',headers={'Range':'bytes=0-99'})
+    assert clip.status_code==206 and len(clip.content)==100
+    assert clip.headers['content-type']=='video/mp4'
+    assert client.get('/presentation/.env').status_code==404

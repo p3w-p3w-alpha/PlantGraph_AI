@@ -1,0 +1,184 @@
+{
+  "tested_at": "2026-10-24T17:40:51.297Z",
+  "url": "http://127.0.0.1:4174",
+  "slides": 5,
+  "complete": true,
+  "checks": [
+    "Five slides: arrow/hash navigation, overview jump, notes and fullscreen",
+    "Four plain workflow steps, optional genuine Gemma image and source scope",
+    "Both configured plant cases: source design, graph and 3D with correct equipment",
+    "Screenshot detail: actual image, zoom/reset, close button and Escape",
+    "Actual 89.8-second product video loads, plays and seeks through both chapters",
+    "White theme, strong main-text contrast, all five desktop slides fit vertically",
+    "All original evidence assets match provenance and all fourteen images decode",
+    "Mobile 390×844: five slides and image/overview dialogs have no horizontal overflow",
+    "Print reveals all five slides and hides interactive navigation"
+  ],
+  "desktopFit": [
+    {
+      "id": "intro",
+      "footer": 933,
+      "overflow": []
+    },
+    {
+      "id": "problem",
+      "footer": 933,
+      "overflow": []
+    },
+    {
+      "id": "solution",
+      "footer": 933,
+      "overflow": []
+    },
+    {
+      "id": "explore",
+      "footer": 933,
+      "overflow": []
+    },
+    {
+      "id": "demo",
+      "footer": 933,
+      "overflow": []
+    }
+  ],
+  "readability": [
+    {
+      "id": "intro",
+      "text": [
+        {
+          "text": "PlantGraphTwin",
+          "size": 82,
+          "ratio": 13.68
+        },
+        {
+          "text": "Understand a water plant.Investigate a problem.Test a r",
+          "size": 25,
+          "ratio": 5.3
+        }
+      ]
+    },
+    {
+      "id": "problem",
+      "text": [
+        {
+          "text": "Why is water delivery falling?A reading does not explai",
+          "size": 57,
+          "ratio": 13.68
+        },
+        {
+          "text": "Engineers need to connect the drawing, the equipment an",
+          "size": 20,
+          "ratio": 4.7
+        },
+        {
+          "text": "Where is the issue?",
+          "size": 25,
+          "ratio": 11.83
+        },
+        {
+          "text": "Drawings and readings are often disconnected.",
+          "size": 18,
+          "ratio": 4.63
+        },
+        {
+          "text": "What else is affected?",
+          "size": 25,
+          "ratio": 11.83
+        },
+        {
+          "text": "A change can affect other equipment.",
+          "size": 18,
+          "ratio": 4.63
+        },
+        {
+          "text": "What should we try?",
+          "size": 25,
+          "ratio": 11.83
+        },
+        {
+          "text": "A proposed response needs to be tested.",
+          "size": 18,
+          "ratio": 4.63
+        }
+      ]
+    },
+    {
+      "id": "solution",
+      "text": [
+        {
+          "text": "Our solution.One place to investigate the plant.",
+          "size": 57,
+          "ratio": 13.68
+        },
+        {
+          "text": "Load the design, explore the plant and compare a respon",
+          "size": 20,
+          "ratio": 4.7
+        },
+        {
+          "text": "Load a design",
+          "size": 23,
+          "ratio": 10.09
+        },
+        {
+          "text": "Check the equipment",
+          "size": 23,
+          "ratio": 10.09
+        },
+        {
+          "text": "Explore the plant",
+          "size": 23,
+          "ratio": 10.09
+        },
+        {
+          "text": "Test a response",
+          "size": 23,
+          "ratio": 10.09
+        },
+        {
+          "text": "Load a design",
+          "size": 28,
+          "ratio": 10.08
+        },
+        {
+          "text": "Gemma proposes the equipment and connections from the i",
+          "size": 19,
+          "ratio": 4.52
+        }
+      ]
+    },
+    {
+      "id": "explore",
+      "text": [
+        {
+          "text": "What we built.A working investigation workspace.",
+          "size": 57,
+          "ratio": 13.68
+        },
+        {
+          "text": "Three filters feed a tank, followed by two duty pumps a",
+          "size": 21,
+          "ratio": 5.46
+        }
+      ]
+    },
+    {
+      "id": "demo",
+      "text": [
+        {
+          "text": "Watch it work.",
+          "size": 57,
+          "ratio": 13.68
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "forbiddenRequests": [],
+  "viewports": [
+    "1600x1000",
+    "390x844"
+  ],
+  "live_ai": false
+}

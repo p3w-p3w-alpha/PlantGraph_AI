@@ -45,3 +45,13 @@ Actual Gemma API usage is verified for the passing Atlas workflow and EPA image 
 ## Verified engineering workflow video
 
 The later user request added `artifacts/videos/plantgraph_demo.mp4`:89.8seconds,1600×1000,H.264. Atlas is33.24seconds; Lower Fox is56.56seconds. Both original recordings and the combined MP4 passed full-frame ffmpeg decoding. The browser workflows assert normal/incident behavior and pure comparisons. The video shows actual source drawings, canonical graphs, procedural3D and both independent Lower Fox problems. No AI requests, Anthropic use or cached-response replay occurred. This recording does not resolve the outstanding live Gemma quota test. `artifacts/videos/manifest.json` records chapters and SHA256.
+
+## Interactive presentation
+
+The final presentation has five simple slides in a light theme: our project, the problem, our solution and how it works, what we built, and the product demo. Real implementation screenshots and the89.8-second demo are preserved. Details are optional in presenter notes and the Sources dialog.
+
+It is served at `/presentation/` by FastAPI, independently with `python3 scripts/serve_presentation.py`, and at the owner-private hosted URL https://plantgraph-twin-presentation.zestypike32.chatgpt.site.
+
+Nine focused presentation browser acceptance groups passed. Checks include five-slide navigation/hash/overview, notes, screenshot zoom, both cases and three views, the four workflow stages, Gemma evidence access, source scope, exact15-asset hashes, all14 image decodes, actual video playback/seeking, a light background, main narrative contrast of at least4.5 and main narrative text of at least18px. Desktop1600×1000, compact laptop1366×768 and mobile390×844 were checked for clipping or horizontal overflow. Print exposes all five slides. There were zero JavaScript/resource errors and zero AI/application API requests. `docs/presentation-validation.json` records the run.
+
+The backend suite passes92 checks, including presentation delivery, static resources, seekable MP4 range responses and exclusion of secrets. This does not change the previously documented live Gemma quota limitation.
