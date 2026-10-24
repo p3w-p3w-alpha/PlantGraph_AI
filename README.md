@@ -1,5 +1,9 @@
 # PlantGraph Twin
 
+## Team
+
+Lina Belkziz, Nassim Lazrek and Abdellah Khajou.
+
 PlantGraph Twin helps an engineer understand a water plant, investigate a problem and calculate whether an intervention would help.
 
 It connects an engineering drawing, an equipment graph, an interactive 3D plant, hydraulic calculations and an AI investigator in one workspace.
