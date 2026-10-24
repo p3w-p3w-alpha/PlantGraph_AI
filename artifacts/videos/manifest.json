@@ -1,0 +1,27 @@
+{
+  "file": "plantgraph_demo.mp4",
+  "duration_seconds": 89.8,
+  "width": 1600,
+  "height": 1000,
+  "codec": "H.264",
+  "audio": false,
+  "sha256": "359a1f4aedb4815973ab955bc9a488f9a253759cafb0b2c8153145e5880252de",
+  "chapters": [
+    {
+      "case_id": "atlas-station-01",
+      "start_seconds": 0,
+      "duration_seconds": 33.24
+    },
+    {
+      "case_id": "lower-fox-river",
+      "start_seconds": 33.24,
+      "duration_seconds": 56.56
+    }
+  ],
+  "live_ai": false,
+  "image_extraction_performed": false,
+  "ai_provider": null,
+  "ai_models": [],
+  "description": "Real browser engineering workflows: source drawing, reviewed canonical graph, procedural 3D, normal operation, independent faults, computed evidence and isolated interventions. No new AI requests, Anthropic usage, cached-response replay or mocked measurements.",
+  "verification": "Both source videos and the combined MP4 passed full frame decoding."
+}

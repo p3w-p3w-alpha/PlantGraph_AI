@@ -66,7 +66,7 @@ try{
  await page.getByRole('button',{name:'Reset simulation'}).click();
  await page.getByRole('button',{name:'Process graph',exact:true}).click();await page.waitForTimeout(1500);
  console.log('Recorded real solver-backed demonstration',process.argv.includes('--live-ai')?'with live '+providerTitle+' calls':'without AI calls');
- console.log('PASS: supported diagram -> review -> linked graph/3D -> baseline/incident -> measurements/alarms/paths -> grounded AI -> isolated hydraulic comparison');
+ console.log('PASS: source diagram -> canonical graph/3D -> baseline/incident -> measurements/alarms/paths -> '+(process.argv.includes('--live-ai')?'live AI -> ':'no AI inference -> ')+'isolated hydraulic comparison');
  completed=true;
 } finally{
  const video=page.video();await context.close();await browser.close();

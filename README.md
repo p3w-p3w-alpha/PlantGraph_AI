@@ -81,6 +81,12 @@ For frontend development, use `./scripts/dev.sh` and open http://127.0.0.1:5173.
 
 Credentials are read by the backend. They must never appear in frontend configuration, screenshots, logs or committed files. The local `.env` file is ignored by Git.
 
+## Demo video
+
+[Watch the complete demo](artifacts/videos/plantgraph_demo.mp4).
+
+The 90 second video shows both cases running, including their source drawings, graphs, 3D plants, problems and calculated interventions. Atlas appears first, followed by Lower Fox River. It makes no new AI requests and does not replay cached AI responses.
+
 ## Screenshots
 
 Open the [local screenshot gallery](artifacts/submission/index.html) to browse both workflows at full resolution.

@@ -1,4 +1,6 @@
-# Screenshot presentation guide
+# Presentation guide
+
+The combined engineering video is `artifacts/videos/plantgraph_demo.mp4` and lasts89.8seconds. It covers both running cases without new AI calls or cached AI replay. The screenshot guide below provides additional evidence.
 
 The latest user instruction replaces video with screenshots. Open `artifacts/submission/normal` first, then `artifacts/submission/problematic`. Source images and application captures are distinguished in the manifests. Engineering observations are calculated, not field measurements. AI screenshots retain the provider and model that actually produced them.
 

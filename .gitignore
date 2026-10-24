@@ -13,6 +13,9 @@ artifacts/*.json
 !artifacts/submission/*.json
 artifacts/_video_tmp/
 artifacts/_lower_fox_video/
+artifacts/_video_sources/
+artifacts/_recording_frames/
+!artifacts/videos/*.json
 data/reference/public-water-plan.pdf
 data/reference/public-water-plan.png
 data/reference/lower-fox-river-376921.pdf

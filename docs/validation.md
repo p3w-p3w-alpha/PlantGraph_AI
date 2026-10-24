@@ -40,4 +40,8 @@ See `lower-fox-model.md` for source facts, missing parameters, illustrative curv
 
 ## Submission status
 
-Actual Gemma API usage is verified for the passing Atlas workflow and EPA image extraction. This is evidence for model usage, not a ruling on overall eligibility. The brief also requires a public repository, license, attribution, working evidence and submission before17:00. This local task has not published a repository or filed an event submission. The local deadline passed during the expanded implementation; no timely filing is claimed.
+Actual Gemma API usage is verified for the passing Atlas workflow and EPA image extraction. This is evidence for model usage, not a ruling on overall eligibility. The brief also requires a public repository, license, attribution, working evidence and submission before17:00. The source and evidence are published at https://github.com/p3w-p3w-alpha/PlantGraph_AI. No event submission has been filed by this local task. The local deadline passed during the expanded implementation; no timely filing is claimed.
+
+## Verified engineering workflow video
+
+The later user request added `artifacts/videos/plantgraph_demo.mp4`:89.8seconds,1600×1000,H.264. Atlas is33.24seconds; Lower Fox is56.56seconds. Both original recordings and the combined MP4 passed full-frame ffmpeg decoding. The browser workflows assert normal/incident behavior and pure comparisons. The video shows actual source drawings, canonical graphs, procedural3D and both independent Lower Fox problems. No AI requests, Anthropic use or cached-response replay occurred. This recording does not resolve the outstanding live Gemma quota test. `artifacts/videos/manifest.json` records chapters and SHA256.

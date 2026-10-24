@@ -34,7 +34,7 @@ Physics and graph operations stay deterministic: EPANET/WNTR calculates hydrauli
 | Clear code license | MIT license provided for original application code and original Atlas drawing. Third-party engineering documents retain their own rights and attribution. |
 | Model, dependencies, startup instructions and explanation | README and pinned backend/frontend dependency files provided; README describes Gemma's role and the deterministic hydraulic engine. |
 | Working demonstration and evidence | Local application, tested workflows and presentation artifacts exist. Consult the latest validation record for the precise tested scope; a local build alone is not a public demo URL. |
-| Public repository accessible without signing in | **Not completed by this local build.** No public repository publication is claimed. |
+| Public repository accessible without signing in | Published at [https://github.com/p3w-p3w-alpha/PlantGraph_AI](https://github.com/p3w-p3w-alpha/PlantGraph_AI); the source and evidence were pushed to main. |
 | Event submission with required fields/challenges | **Not completed by this local build.** No submission confirmation or timely submission is claimed. |
 | Submission before 17:00 | **Not established.** A functioning local application does not satisfy the event filing deadline. |
 

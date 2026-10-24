@@ -102,8 +102,9 @@ def exclusion(path: Path, output: Path) -> str | None:
         return "runtime credentials"
     if name in CREDENTIAL_FILES or name.startswith("client_secret") or "service-account" in name or "service_account" in name:
         return "credential files"
-    if full.suffix.lower() in {".webm", ".mp4", ".mov", ".mkv", ".avi"} or name.endswith(".recording.json"):
-        return "videos are outside the screenshot submission"
+    published_demo = parts[:2] == ("artifacts", "videos") and full.suffix.lower() == ".mp4"
+    if (full.suffix.lower() in {".webm", ".mp4", ".mov", ".mkv", ".avi"} and not published_demo) or name.endswith(".recording.json"):
+        return "unpublished recording source"
     if name.startswith(".plantgraph-submission-") or name.startswith(".plantgraph-source-"):
         return "temporary generated archive"
     if full.suffix.lower() in {".pem", ".key", ".p12", ".pfx", ".pyc", ".log", ".tsbuildinfo"}:

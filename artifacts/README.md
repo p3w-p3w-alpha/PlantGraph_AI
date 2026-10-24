@@ -1,6 +1,6 @@
 # Evidence index
 
-The current submission evidence uses **screenshots only**. A new video is not required. The presentation folders are:
+The submission contains21 organized screenshots and a verified90-second engineering workflow video. The video is at `videos/plantgraph_demo.mp4`; `videos/manifest.json` records its chapters, hash and verification. It makes no new AI requests and does not replay cached AI responses. The presentation folders are:
 
 ```text
 artifacts/

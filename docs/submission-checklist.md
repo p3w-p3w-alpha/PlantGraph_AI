@@ -1,6 +1,6 @@
 # Presentation and submission checklist
 
-Status snapshot: October 24, 2026. The requested evidence consists of still screenshots organized into two folders. [validation.md](validation.md) records the test commands and detailed outcomes.
+Status snapshot: October 24, 2026. Evidence includes21 screenshots organized into two folders and a verified90-second engineering workflow video in `artifacts/videos`. The video makes no new AI requests. [validation.md](validation.md) records the test commands and detailed outcomes.
 
 ## Current readiness
 
@@ -10,7 +10,7 @@ Status snapshot: October 24, 2026. The requested evidence consists of still scre
 - [x] Real Gemma 4 image extraction and investigation succeeded during development. These results are specific to the requests and cases actually tested.
 - [ ] **The complete Lower Fox Gemma investigation remains unverified.** Its production test encountered a Google HTTP429 quota response. Do not describe that test or the full final Gemma workflow as passed.
 - [ ] Complete and review the final screenshot manifest before packaging. Any screenshots captured from the isolated Claude environment must retain their actual provider and model identity. They are not Gemma evidence.
-- [ ] **Public repository publication has not been performed.** No Git remote is configured at this snapshot.
+- [x] Public repository published at https://github.com/p3w-p3w-alpha/PlantGraph_AI; origin is configured and main has been pushed.
 - [ ] **Event submission has not been performed.** The brief's October24,17:00 Africa/Casablanca deadline has passed. Any late acceptance must be established with the organizers. A local package does not establish submission or eligibility.
 
 ## Start the local product
@@ -79,7 +79,7 @@ python3 scripts/package_submission.py
 
 The output is `artifacts/plantgraph-submission.zip`. The packager scans for actual configured secret values and credential-like keys. It excludes runtime credentials, private event materials, dependencies, build/test output and temporary material. Inspect the final package before publishing; no credential should appear in the browser, logs, source or screenshots.
 
-- [ ] Create and push the intended public repository, then verify it opens without authentication. This is still an external step, not an outcome of creating the ZIP.
+- [x] Source and evidence pushed to the public repository: https://github.com/p3w-p3w-alpha/PlantGraph_AI. Event filing remains separate.
 - [ ] Verify any late-submission arrangement with the organizers, select the intended challenge(s), submit the actual repository/demo information and retain confirmation. Qualifying model usage, public source and working evidence do not guarantee an award.
 
 Describe the result as a working local prototype with the exact verification limits until all applicable external steps are actually complete.
