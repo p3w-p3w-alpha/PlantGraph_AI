@@ -1,0 +1,123 @@
+import {test,expect} from '@playwright/test';
+
+test.describe('source-derived Lower Fox engineering case',()=>{
+ test.beforeEach(async({request})=>{
+  const r=await request.post('/api/cases/select',{data:{case_id:'atlas-station-01'}});
+  expect(r.ok()).toBeTruthy();
+ });
+ test.afterAll(async({request})=>{await request.post('/api/cases/select',{data:{case_id:'atlas-station-01'}})});
+
+ test('switches case with fresh equipment, observations and AI context; preserves Atlas',async({page})=>{
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');
+  await expect(page.locator('.asset-identity h2')).toHaveText('F-101');
+  await page.getByRole('combobox',{name:'Engineering case'}).selectOption('lower-fox-river');
+  await expect(page.locator('.case-workspace')).toBeVisible();
+  await expect(page.locator('.asset-identity h2')).toHaveText('CF1');
+  await expect(page.locator('.case-workspace .app-body')).not.toContainText('P-101A');
+  await expect(page.locator('.case-workspace .app-body')).not.toContainText('PT-101');
+  await expect(page.locator('.case-workspace .app-body')).not.toContainText('T-101');
+  await page.route('**/api/ai/chat',r=>r.fulfill({json:{answer:'Lower Fox context test fixture — not a live AI request.',evidence:[],hypotheses:[],suggested_actions:[],source:'recorded',model:'test-fixture'}}));
+  await page.getByRole('button',{name:'AI investigator',exact:true}).click();
+  await page.getByRole('textbox',{name:'Ask the engineering investigator'}).fill('Summarize this source-derived case');
+  await page.getByRole('button',{name:'Send investigation question'}).click();
+  await expect(page.getByText('Lower Fox context test fixture — not a live AI request.')).toBeVisible();
+  await page.getByRole('combobox',{name:'Engineering case'}).selectOption('atlas-station-01');
+  await expect(page.locator('.asset-identity h2')).toHaveText('F-101');
+  await expect(page.getByText('Lower Fox context test fixture — not a live AI request.')).toHaveCount(0);
+  await expect(page.locator('.stat-value').first()).toContainText('69.4');
+  expect(errors).toEqual([]);
+ });
+
+ test('canonical graph, inspector and source facts describe the same lower-fox equipment',async({page,request})=>{
+  await request.post('/api/cases/select',{data:{case_id:'lower-fox-river'}});
+  const plant=await (await request.get('/api/plant')).json();
+  await page.goto('/');
+  await page.getByRole('button',{name:'Process graph',exact:true}).click();
+  await expect(page.locator('.react-flow__node')).toHaveCount(plant.assets.length);
+  await expect(page.locator('.react-flow__edge')).toHaveCount(plant.connections.length);
+  await expect(page.locator('.react-flow__edge.animated')).toHaveCount(0);
+  await page.getByRole('button',{name:'Play simulation',exact:true}).click();
+  await expect.poll(async()=> (await (await request.get('/api/state')).json()).playing).toBe(true);
+  await expect(page.locator('.react-flow__edge.animated').first()).toBeVisible();
+  const offlineEdges=plant.connections.filter((c:any)=>c.from.includes('CF3')||c.to.includes('CF3')||c.from.includes('2C')||c.to.includes('2C'));
+  expect(offlineEdges.length).toBeGreaterThan(0);
+  for(const edge of offlineEdges)await expect(page.locator(`.react-flow__edge[data-id="${edge.id}"]`)).not.toHaveClass(/animated/);
+  await page.getByRole('button',{name:'Pause simulation',exact:true}).click();
+  await expect(page.locator('.react-flow__edge.animated')).toHaveCount(0);
+  await page.getByRole('button',{name:'CF2 Cartridge filter 2',exact:true}).click();
+  await expect(page.locator('.asset-identity h2')).toHaveText('CF2');
+  await expect(page.locator('.measurement-list')).toContainText('PI-711A');
+  await expect(page.locator('.measurement-list')).toContainText('computed proxy of documented instrument');
+  await page.getByRole('button',{name:'Downstream',exact:true}).click();
+  await expect(page.locator('.path-active').first()).toBeVisible();
+  await expect(page.getByText('SOURCE FACTS',{exact:true})).toBeVisible();
+  await expect(page.getByText('CONFIGURED ASSUMPTIONS',{exact:true})).toBeVisible();
+  const interlockAssumption=plant.assumptions.find((a:any)=>a.statement.includes('3000gpm'));
+  expect(interlockAssumption).toBeTruthy();
+  await expect(page.locator('.case-assumptions')).toContainText(interlockAssumption.statement);
+  await expect(page.locator('.case-asset-source').first()).toHaveAttribute('href',/376921\.pdf#page=/);
+  await page.getByRole('button',{name:'P&ID',exact:true}).click();
+  await expect(page.locator('.drawing-image-wrap img')).toHaveAttribute('src',plant.pid_url);
+  await expect(page.locator('.drawing-actions')).toContainText('Only the documented filtration');
+  await page.screenshot({path:'../artifacts/lower-fox-source-workflow.png',fullPage:true});
+ });
+
+ test('explicit source reconciliation lists changes and uses one canonical graph and scene',async({page,request})=>{
+  await request.post('/api/cases/select',{data:{case_id:'lower-fox-river'}});
+  const plant=await (await request.get('/api/plant')).json();let reviewed:any;
+  await page.route('**/api/ai/extract-demo',r=>r.fulfill({json:{document_id:'lower-fox-ui-fixture',assets:[{id:'CF1',type:'filter',name:'Cartridge filter1',bbox:[.1,.2,.2,.4],confidence:.8}],connections:[],uncertainties:['Other source valves were omitted by this explicit UI test fixture'],summary:'Scoped extraction test fixture; not a live model response',source:'recorded',model:'test-fixture',image_url:plant.pid_url,validation:{valid:false,missing_assets:['CF2'],extra_assets:[],missing_connections:[]}}}));
+  await page.route('**/api/ai/review',async r=>{reviewed=r.request().postDataJSON();await r.fulfill({json:{accepted:true,simulation_ready:true,issues:[]}})});
+  await page.goto('/');
+  await page.getByRole('button',{name:'Extract scoped source with Gemma',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Review the extracted plant.'})).toBeVisible();
+  expect(JSON.parse(await page.getByRole('textbox',{name:'Review extracted equipment'}).inputValue())).toHaveLength(1);
+  await page.getByRole('button',{name:'Use documented case mapping',exact:true}).click();
+  await expect(page.locator('.case-reconciliation-summary')).toContainText('not from the AI output');
+  await expect(page.locator('.case-reconciliation-summary')).toContainText('CF2');
+  const draft=JSON.parse(await page.getByRole('textbox',{name:'Review extracted equipment'}).inputValue());
+  expect(draft).toHaveLength(plant.assets.length);
+  expect(draft.find((a:any)=>a.id==='CF1').scene_position).toEqual(plant.assets.find((a:any)=>a.id==='CF1').scene_position);
+  expect(draft.find((a:any)=>a.id==='CF1').bbox).toEqual([.1,.2,.2,.4]);
+  await page.getByRole('button',{name:'Confirm reviewed model',exact:true}).click();
+  await expect(page.getByText('Reviewed source · active-case binding verified')).toBeVisible();
+  expect(reviewed.review_provenance).toBe('source_reviewed_augmentation');
+  expect(reviewed.reconciliation.added_assets).toHaveLength(plant.assets.length-1);
+  await page.getByRole('button',{name:'Process graph',exact:true}).click();
+  await expect(page.locator('.react-flow__node')).toHaveCount(plant.assets.length);
+  await page.getByRole('button',{name:'3D twin',exact:true}).click();
+  await expect(page.locator('.generic-twin')).toHaveAttribute('data-case-id','lower-fox-river');
+ });
+
+ test('independent filter and pump scenarios have pure, correctly matched changeover comparisons',async({page,request})=>{
+  await request.post('/api/cases/select',{data:{case_id:'lower-fox-river'}});
+  const normal=await (await request.get('/api/state')).json();
+  await page.goto('/');
+  await page.getByRole('combobox',{name:'Case scenario'}).selectOption('filter_fouling');
+  await expect.poll(async()=> (await (await request.get('/api/state')).json()).metrics.inflow_m3h).toBeLessThan(normal.metrics.inflow_m3h);
+  const fouled=await (await request.get('/api/state')).json();
+  expect(fouled.metrics.outflow_m3h).toBeCloseTo(normal.metrics.outflow_m3h,2);
+  expect(fouled.metrics.mass_balance_m3h).toBeLessThan(0);
+  await page.getByRole('button',{name:'CF1 Cartridge filter 1',exact:true}).click();
+  await page.getByRole('button',{name:'Test changeover intervention',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Test before you change.'})).toBeVisible();
+  await expect(page.locator('.compare-table')).toContainText('filter bank inflow');
+  const afterComparison=await (await request.get('/api/state')).json();
+  expect(afterComparison.controls).toEqual(fouled.controls);
+  expect(afterComparison.metrics).toEqual(fouled.metrics);
+  expect(afterComparison.elapsed_s).toBe(fouled.elapsed_s);
+  await page.getByRole('button',{name:'Close comparison',exact:true}).click();
+  await page.getByRole('combobox',{name:'Case scenario'}).selectOption('pump_degradation');
+  await expect.poll(async()=> (await (await request.get('/api/state')).json()).metrics.outflow_m3h).toBeLessThan(normal.metrics.outflow_m3h);
+  const pumpFault=await (await request.get('/api/state')).json();
+  expect(pumpFault.metrics.inflow_m3h).toBeCloseTo(normal.metrics.inflow_m3h,2);
+  expect(pumpFault.elapsed_s).toBe(0);
+  expect(pumpFault.metrics.tank_level_m).toBe(normal.metrics.tank_level_m);
+  await page.getByRole('button',{name:'P-2A Effluent pump 2A',exact:true}).click();
+  await page.getByRole('button',{name:'Test changeover intervention',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Test before you change.'})).toBeVisible();
+  const afterPumpExperiment=await (await request.get('/api/state')).json();
+  expect(afterPumpExperiment.controls).toEqual(pumpFault.controls);
+  expect(afterPumpExperiment.metrics).toEqual(pumpFault.metrics);
+ });
+});

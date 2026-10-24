@@ -1,0 +1,247 @@
+{
+  "captured_at": "2026-10-24T16:43:52.877Z",
+  "mode": "live_screenshots_only",
+  "backup_provider": "anthropic",
+  "backup_model": "claude-sonnet-5-5",
+  "application_main_provider": "gemma",
+  "classification": "These AI evidence screenshots use the explicitly labeled isolated Claude backup. The primary application remains configured for Gemma. All hydraulic observations are computed, not field telemetry or recorded incidents.",
+  "screenshots": [
+    {
+      "path": "problematic/atlas_ai.png",
+      "case_id": "atlas-station-01",
+      "scenario": "filter_clogging",
+      "selected_asset": "F-101",
+      "ai_provider": "anthropic",
+      "ai_model": "claude-sonnet-5-5",
+      "captured_at": "2026-10-24T16:44:15.426Z",
+      "source": {
+        "kind": "original_demonstration_design",
+        "image": "/data/pid/station.png"
+      },
+      "observations": "Genuine current hydraulic solver output; independent injected experiment, not a historical incident.",
+      "computed_state": {
+        "tank_level_m": 4,
+        "tank_level_pct": 66.66666666666666,
+        "flow_m3h": 52.48269326984882,
+        "delivery_m3h": 52.48269326984882,
+        "pt101_bar": 3.619613924865723,
+        "pt102_bar": 2.242325664891243,
+        "pump_speed_pct": 100,
+        "valve_open_pct": 100,
+        "leak_m3h": 0,
+        "pump_head_m": 33.98221969604492,
+        "filter_resistance": 80,
+        "filter_dp_bar": 1.3772882599744798
+      },
+      "evidence_count": 4,
+      "answer_summary": "Computed observations show F-101 differential pressure of 1.38 bar (PT-101 3.62, PT-102 2.24), above the 0.80 bar alarm limit. FT-101 delivery is 52.5 m³/h against a 69.4 m³/h baseline. The reference row has the same timestamp as the current row, so I treat it as a comparison state, not a time trend. Versus that reference, filter dP rose from 0.30 to 1.38 bar, flow fell, and pump head rose from 25.7 to 34.0 m. That is consistent with added resistance in the series path P-101A → J-DISCHARGE → F-101 → V-101 → V-102, with the pump moving up its curve. Tank level is 4 m (66.7%) with no low-level interlock, so tank buffering is not limiting. A downstream restriction would normally raise PT-102, and it fell, so that is less likely. Elevated filter resistance is the leading hypothesis, not proven. A pressure transmitter error or a pump-side difference remain possible. Next experiment: run a server-recomputed changeover to P-101B. If dP stays high at similar flow, the resistance is downstream of the pump. No comparison result has been supplied, so I give no predicted numbers.",
+      "evidence": [
+        {
+          "label": "Filter differential pressure",
+          "value": "1.38 bar (PT-101 3.62 bar, PT-102 2.24 bar), alarm limit 0.80 bar",
+          "source": "current_observations.values.filter_dp_bar / alarm filter-dp (computed simulation, not field measurement)"
+        },
+        {
+          "label": "Delivery vs baseline",
+          "value": "FT-101 52.5 m³/h vs 69.4 m³/h baseline",
+          "source": "current_observations.values.flow_m3h / alarm delivery-low (computed simulation)"
+        },
+        {
+          "label": "Pump head and controls",
+          "value": "33.98 m at 100% speed, P-101A active, V-101 100% open",
+          "source": "current_observations.values.pump_head_m and controls (computed simulation)"
+        },
+        {
+          "label": "Reference state",
+          "value": "dP 0.30 bar, flow 69.4 m³/h, head 25.7 m, same timestamp",
+          "source": "recent_observations[0] (computed simulation)"
+        }
+      ],
+      "hypotheses": [
+        {
+          "cause": "Elevated hydraulic resistance within F-101 (fouling-like). The model does not identify the mechanism.",
+          "confidence": "medium",
+          "asset_ids": [
+            "F-101"
+          ]
+        },
+        {
+          "cause": "Restriction elsewhere in the series path, such as V-101 or V-102. Less likely because PT-102 fell.",
+          "confidence": "low",
+          "asset_ids": [
+            "V-101",
+            "V-102"
+          ]
+        },
+        {
+          "cause": "Pump-side difference or pressure transmitter error affecting the apparent dP.",
+          "confidence": "low",
+          "asset_ids": [
+            "P-101A",
+            "F-101"
+          ]
+        }
+      ],
+      "live_api_response_verified": true,
+      "provider_badge_visible": true
+    },
+    {
+      "path": "problematic/lowerfox_filter_ai.png",
+      "case_id": "lower-fox-river",
+      "scenario": "filter_fouling",
+      "selected_asset": "CF1",
+      "ai_provider": "anthropic",
+      "ai_model": "claude-sonnet-5-5",
+      "captured_at": "2026-10-24T16:44:33.110Z",
+      "source": {
+        "kind": "source_derived_scoped_design",
+        "url": "https://semspub.epa.gov/work/05/376921.pdf",
+        "pdf_page": 101,
+        "drawing": "P107"
+      },
+      "observations": "Genuine current hydraulic solver output; independent injected experiment, not a historical incident.",
+      "computed_state": {
+        "inflow_m3h": 638.0056321620941,
+        "outflow_m3h": 912.6155018806458,
+        "tank_level_m": 4.572,
+        "tank_level_pct": 75,
+        "filter_bank_dp_bar": 0.7033234853925706,
+        "controller_effort_pct": 85.74906587600711,
+        "mass_balance_m3h": -274.60986971855164
+      },
+      "evidence_count": 4,
+      "answer_summary": "Backup recording (Anthropic Claude, not Gemma). CF1 carries a computed 173.1 m³/h (model-only) versus 464.9 m³/h in CF2, with similar DP (0.702 vs 0.693 bar). Source fact: DPIT-713 is shared and cannot identify one vessel (LF-F2). Since DP is nearly equal but flow is about 63% lower, CF1 appears to have higher computed resistance than CF2. That is a model inference, not a measurement. Propagation: filters are upstream of the finite tank, so the computed inflow of 638.0 m³/h versus outflow of 912.6 m³/h drains the tank at -274.6 m³/h (MODEL-INVENTORY-IMBALANCE, a computed warning, not a PLC alarm). The level is 75%, and the controller effort is 85.7%. Alternatives: partial fouling, a partly closed CF1 inlet/outlet valve, or a gauge/proxy discrepancy. Experiment: run the server-recomputed CF1-to-CF3 changeover from identical tank/controller conditions. If CF1's flow deficit follows the vessel offline, the cause is vessel resistance. If it persists, suspect the branch valves or piping. No what-if numbers are available yet.",
+      "evidence": [
+        {
+          "label": "CF1 vs CF2 computed flow",
+          "value": "173.1498 vs 464.8558 m³/h",
+          "source": "MODEL-FLOW-CF1 / MODEL-FLOW-CF2 (computed_model_only)"
+        },
+        {
+          "label": "CF1 pressure proxies",
+          "value": "PI-710A 1.1682 bar, PI-710B 0.4663 bar, DP 0.7019 bar",
+          "source": "PI-710A/PI-710B (computed_proxy_of_documented_instrument)"
+        },
+        {
+          "label": "Shared bank DP",
+          "value": "0.7033 bar; source alarm 30 psi, normal 10 psi",
+          "source": "DPIT-713 (computed proxy); LF-F2 p.82"
+        },
+        {
+          "label": "Tank imbalance",
+          "value": "inflow 638.0 vs outflow 912.6 m³/h; net -274.6 m³/h",
+          "source": "MODEL-INVENTORY-IMBALANCE (computed_model_only)"
+        }
+      ],
+      "hypotheses": [
+        {
+          "cause": "Higher CF1 filter resistance (fouling or plugging) than CF2",
+          "confidence": "medium",
+          "asset_ids": [
+            "CF1"
+          ]
+        },
+        {
+          "cause": "Partly closed CF1 inlet or outlet isolation valve adding branch loss",
+          "confidence": "low",
+          "asset_ids": [
+            "16\"-BFV-CF1-1",
+            "16\"-BFV-CF1-2",
+            "CF1"
+          ]
+        },
+        {
+          "cause": "Pump speed or VFD setting driving the inventory drawdown, with CF1 contributing less to supply",
+          "confidence": "low",
+          "asset_ids": [
+            "P-2A",
+            "P-2B",
+            "ET"
+          ]
+        }
+      ],
+      "live_api_response_verified": true,
+      "provider_badge_visible": true
+    },
+    {
+      "path": "problematic/lowerfox_pump_ai.png",
+      "case_id": "lower-fox-river",
+      "scenario": "pump_degradation",
+      "selected_asset": "P-2A",
+      "ai_provider": "anthropic",
+      "ai_model": "claude-sonnet-5-5",
+      "captured_at": "2026-10-24T16:44:52.237Z",
+      "source": {
+        "kind": "source_derived_scoped_design",
+        "url": "https://semspub.epa.gov/work/05/376921.pdf",
+        "pdf_page": 101,
+        "drawing": "P107"
+      },
+      "observations": "Genuine current hydraulic solver output; independent injected experiment, not a historical incident.",
+      "computed_state": {
+        "inflow_m3h": 912.6153945922852,
+        "outflow_m3h": 747.9080200195312,
+        "tank_level_m": 4.572,
+        "tank_level_pct": 75,
+        "filter_bank_dp_bar": 0.6776957544229032,
+        "controller_effort_pct": 85.74906587600711,
+        "mass_balance_m3h": 164.7073745727539
+      },
+      "evidence_count": 4,
+      "answer_summary": "Claude backup recording (provider: Anthropic). P-2A is a duty pump, but the computed readings show it passing 218.5 m³/h while P-2B passes 529.4 m³/h, both at 85.7491% speed. Linked speeds are identical, so the flow split is not a speed-setting difference. Source fact: duty pumps are rated 3000 USgpm each (LF-F4). Computed observation: the tank is at 4.572 m (75%) with a +164.7 m³/h inventory imbalance (inflow 912.6 vs outflow 747.9). That is a model-only diagnostic, not a PLC alarm. Tank buffering means upstream filter changes affect inventory before delivery, so filter DP alone does not explain P-2A's low share. Alternatives for the low P-2A flow: higher P-2A branch resistance (partly closed suction, check, or discharge valve), a degraded pump curve, or a model-side asymmetry. Computed pressures cannot separate these. The most informative experiment is the server-recomputed P-2A to P-2C changeover at identical tank and controller conditions. If the low share moves with the pump, P-2A is implicated. If it stays with the branch, valves or piping are more likely. No what-if numbers are available yet.",
+      "evidence": [
+        {
+          "label": "P-2A vs P-2B branch flow",
+          "value": "P-2A 218.4693 m³/h; P-2B 529.4386 m³/h; both at 85.7491% speed",
+          "source": "current_observations.asset_values (computed model output)"
+        },
+        {
+          "label": "P-2A discharge pressure proxy",
+          "value": "PI-721A 1.1949 bar vs PI-721B 1.2688 bar",
+          "source": "PI-721A/PI-721B (computed_proxy_of_documented_instrument)"
+        },
+        {
+          "label": "Tank inventory imbalance",
+          "value": "Inflow 912.6 m³/h, outflow 747.9 m³/h, net +164.7 m³/h",
+          "source": "MODEL-INVENTORY-IMBALANCE (computed_model_only)"
+        },
+        {
+          "label": "Rated pump duty",
+          "value": "3000 USgpm at 35 ft TDH each; any two operate, third is spare",
+          "source": "LF-F4, PDF p.96 sec 7.7 (source fact)"
+        }
+      ],
+      "hypotheses": [
+        {
+          "cause": "Elevated P-2A branch resistance, such as a partly closed suction isolation, check valve or discharge MOV",
+          "confidence": "medium",
+          "asset_ids": [
+            "18\"-BFV-2A",
+            "10\"-CV-2A",
+            "10\"-BFV-2A",
+            "P-2A"
+          ]
+        },
+        {
+          "cause": "P-2A degraded head-flow performance relative to P-2B at the same speed",
+          "confidence": "low",
+          "asset_ids": [
+            "P-2A"
+          ]
+        },
+        {
+          "cause": "Leak or asymmetry elsewhere in the shared discharge path, or a VFD setting difference not visible in the linked-speed proxy",
+          "confidence": "low",
+          "asset_ids": [
+            "OUTLET-HEADER",
+            "P-2A",
+            "P-2B"
+          ]
+        }
+      ],
+      "live_api_response_verified": true,
+      "provider_badge_visible": true
+    }
+  ],
+  "failures": []
+}

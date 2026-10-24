@@ -1,54 +1,43 @@
-# Verification record — frozen v1
+# Verification and screenshot evidence
 
-Date: October 24, 2026. Python 3.12.14, WNTR 1.5.0 / EPANET 2.2, Node.js 24.21.0. Live AI model: `claude-sonnet-5-5` through the Anthropic API. Original station drawing and code; documented illustrative physical parameters.
+Date: October24,2026. Python3.12, WNTR1.5, EPANET2.2, google-genai2.33.0, React19 and Vite7.
 
-## Passed checks
+## Completed checks
 
-| Check | Verified result |
-|---|---|
-| Backend and hydraulic tests | **43 passed** |
-| Production frontend build | TypeScript and Vite passed; 3D loads as a separate chunk |
-| Browser tests against production server | **10 passed**, including three live Anthropic tests |
-| Production launcher | `./scripts/present.sh` builds and serves the app at `http://127.0.0.1:8000` |
-| Presentation deck | Six slides, keyboard navigation, screenshots and app link; no browser page errors |
-| Complete seven-step rehearsal | **Passed**, recorded at `artifacts/demo.webm` with live Claude extraction and investigation |
-| Laptop layouts | Playback controls verified accessible at 1440×900, 1366×768 and 1280×800 |
-| Credential handling | `.env` ignored by Git; no credential patterns in version-control-eligible source files; no browser credential |
+The backend suite passes **91 tests**. These cover both hydraulic cases, normal stability, tank mass balance, independent problems, source interlocks, pure changeover comparisons, failed-solve handling, source mapping, case isolation, AI schema/privacy boundaries, model configuration and safe quota handling.
 
-Final browser command:
+The complete production browser run passed **22 of23 tests**. Passing checks include all dedicated3D interactions, actual mesh clicks for three filters/three pumps/tank, double-click focus, orbit/zoom, selection preservation, graph/source/inspector synchronization, visible arrows, pause freezing, inactive branches, tank geometry, computed alarms, case switching, independent changes and isolated predictions. Atlas live Gemma image extraction, copilot investigation and a natural-language valve comparison also passed.
 
-```bash
-PLAYWRIGHT_BASE_URL=http://127.0.0.1:8000 LIVE_AI=1 npm run test:e2e
-```
+The remaining test extracted the actual EPA image using Gemma, explicitly reconciled and reviewed its topology, displayed the rebuilt graph/3D, ran normal operation and introduced the filter problem. The first engineering investigation then received a **Google429 quota response**. Therefore the uninterrupted Lower Fox live Gemma workflow is **not claimed as passed**.
 
-The browser suite covers graph/tree/measurement selection, instrumentation layers, real filter-restriction consequences, pure what-if comparison, playback and reset, linked 3D selection, evidence export, source-context isolation, live image extraction/review, live grounded investigation, and a natural-language valve experiment reaching the actual solver. The pump regression remains a backend capability test outside the frozen presentation menu.
+After that run, redundant diagnostic context was reduced, histories compacted, a case-specific response schema retained, and bounded same-model quota retries added. Daily or zero quotas are not retried. Safe quota metadata excludes keys, headers, raw messages and project identifiers. These changes pass the backend tests; they do not by themselves prove the failed live workflow now passes.
 
-## Engineering checks
+Production builds pass. The documented setup/startup commands have been exercised locally. `scripts/present.sh` builds and serves the application on port8000. Backend credentials remain local and ignored; scanning source, artifacts and production bundles found no configured credential.
 
-At the initial 4 m tank level, default speed and open valves:
+## AI attribution
 
-| Measurement | Baseline | Filter resistance K=80 |
-|---|---:|---:|
-| Delivery | 69.3884 m³/h | 52.4827 m³/h |
-| Filter inlet | 2.7402 bar | 3.6196 bar |
-| Filter outlet | 2.4387 bar | 2.2423 bar |
-| Filter differential | 0.301485 bar | 1.377288 bar |
+The submitted application is configured for **gemma-4-26b-a4b-it** through the Gemini API. The31B model was attempted first;26B was explicitly selected after provider failures, not silently substituted. Current provider errors are explicit. There is no provider fallback in the submitted app.
 
-The differential is derived from those two pressure taps. Filter restriction crosses the documented 0.8 bar differential alarm. Restoring clean-filter K=10 in a detached comparison restores baseline at the same inventory and boundary conditions without changing controls, clock or history.
+A separate temporary Claude environment was authorized for backup screenshots. Its actual model is **claude-sonnet-5-5**. Such screenshots retain a visible Claude identity and capture metadata; they are not described as Gemma responses. Temporary server code and credentials are outside the repository. Current main configuration remains Gemma.
 
-Tests verify tank mass balance, low-level interlocks, inactive pumps, bounded history, pause/speed timing, parameter validation and solver-failure recovery. Diagram validation rejects missing equipment, unsupported bypasses, invalid endpoints and new branches. Zero-volume instrument taps may subdivide a supported pipe without becoming unknown hydraulic equipment.
+## Screenshot package
 
-The diagnostic context is tested to exclude the scenario name and latent resistance, pump-health and leak controls. Unmapped imported drawings receive no station telemetry; their actions retain their own identifiers and cannot start an unbound what-if.
+The user replaced video recording with still screenshots to reduce presentation preparation time. No new verified video is claimed or required for this package.
 
-## Independent input checks
+- `artifacts/submission/normal/`: actual source design images, canonical graphs, normal3D scenes and available extraction review evidence.
+- `artifacts/submission/problematic/`: solver-calculated faults, pressure/inventory evidence, paths, AI responses with actual attribution, and detached changeover comparisons.
+- Capture manifests identify dates, cases, sources, providers and computed-data provenance. Engineering-only captures contain no AI responses.
 
-- Original station: live Claude extraction identifies the equipment and process/signal connections, including variable representations of passive instrument taps. Engineer review and semantic validation precede binding.
-- CADXChange heating-system sample: unfamiliar equipment is exposed and station simulation is blocked.
-- Public Utah water-facility drawing, page 25: extraction returned 20 principal assets and 18 candidate connections; incomplete printed tags and ambiguous connections were identified. It is not attached to the station simulator.
-- BATADAL: downloaded original benchmark files are kept separate; no claim of physical field measurements or matching custom-station readings.
+All engineering screenshots were taken from genuine browser/API interactions. No measurements or AI responses were intercepted and replaced with fixtures. Original source page/crop files are identified separately from application screenshots.
 
-## Practical limits
+## Engineering limits
 
-This is a local, single-session representative hydraulic experiment, not a calibrated operational utility twin. P&ID extraction is probabilistic and needs engineering review; self-reported confidence is uncalibrated. 3D geometry is illustrative. No treatment chemistry, water hammer, live hardware or automatic operating procedure is modeled. The configured Claude model is proprietary and does not meet a Gemma-only or central open-weight AI challenge requirement.
+Atlas is an original representative station. Lower Fox uses the EPA-hosted source design and documented assumptions for missing parameters. Neither case is a recorded historical incident or field-calibrated twin. BATADAL is not assigned to either case.
 
-The complete recording was generated successfully by `node scripts/record-demo.mjs --live-ai` using genuine browser, Anthropic and hydraulic interactions. The script asserts reviewed topology binding, normal hydraulic behavior, restricted delivery and high differential pressure, graph/3D selection, active alarm evidence, live Claude attribution, predicted delivery recovery, and unchanged live controls after the comparison. It finished with a PASS verdict for the complete seven-step workflow. The resulting VP9 video is 69.56 seconds at 1600×1000. It is a backup demonstration, not evidence of a historical incident.
+Lower Fox sourceDPIT-713 is shared across the filter bank and does not identify one blocked vessel alone. Branch flow readings are explicitly model-only. Fouling initially changes inflow/inventory; pump degradation initially changes outflow/inventory. Source low-flow/low-low trips are latched. The added inventory warning is computed, not a documented PLC alarm. The source30psi bank alarm is not artificially forced to trigger under the illustrative boundary heads.
+
+See `lower-fox-model.md` for source facts, missing parameters, illustrative curves, controller assumptions, interlocks and the pure-comparison contract.
+
+## Submission status
+
+Actual Gemma API usage is verified for the passing Atlas workflow and EPA image extraction. This is evidence for model usage, not a ruling on overall eligibility. The brief also requires a public repository, license, attribution, working evidence and submission before17:00. This local task has not published a repository or filed an event submission. The local deadline passed during the expanded implementation; no timely filing is claimed.

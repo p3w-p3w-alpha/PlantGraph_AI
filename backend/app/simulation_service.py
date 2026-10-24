@@ -280,4 +280,24 @@ class SimulationService:
             return dict(baseline=baseline,predicted=predicted,deltas=deltas,summary=summary)
 
 
-simulation_service = SimulationService()
+atlas_simulation_service = SimulationService()
+
+
+class CaseSimulationFacade:
+    """Dispatch the active canonical case without changing Atlas contracts."""
+    def __init__(self):self.lower_fox_service=None
+    def _active(self):
+        from .plant_service import get_active_case_id
+        if get_active_case_id()=='atlas-station-01':return atlas_simulation_service
+        if self.lower_fox_service is None:
+            from .lower_fox import LowerFoxService
+            self.lower_fox_service=LowerFoxService()
+        return self.lower_fox_service
+    def __getattr__(self,name):return getattr(self._active(),name)
+    def what_if_intervention(self,intervention,asset_id=None):
+        from .plant_service import get_active_case_id
+        if get_active_case_id()!='lower-fox-river':raise ValueError('Source-case intervention requires Lower Fox selection')
+        return self._active().intervention(intervention,asset_id)
+
+
+simulation_service=CaseSimulationFacade()

@@ -18,7 +18,7 @@ CADXChange, **Feed and heating system P&ID**, version 1.0, updated October 21, 2
 - Attribution: CADXChange. Third-party terms apply; the application MIT license does not relicense this drawing.
 - Purpose: independent extraction of unfamiliar symbols, pumps, control loops and a heat exchanger. It is a heating-system example, not a real water utility and not compatible with this station's hydraulic model.
 
-The live Claude extraction found 31 symbols/equipment, including a heat exchanger, a process vessel and steam/condensate boundaries. The validator rejected station simulation binding. This tests that the application exposes unsupported engineering content instead of silently substituting the sample station.
+An earlier provider validation found unfamiliar symbols, including a heat exchanger, a process vessel and steam/condensate boundaries. That is historical extraction evidence, not proof of the current Gemma model. The validator rejected station simulation binding. This tests that the application exposes unsupported engineering content instead of silently substituting the sample station.
 
 ## BATADAL / C-Town benchmark files
 
@@ -37,10 +37,16 @@ North Fork Special Service District Water Treatment Facility, Sundance, Utah: **
 
 The sheet depicts a storage tank, three parallel booster pumps, level/pressure/flow instrumentation, VFD and PLC/SCADA signals. It is a publicly posted project design, not a verified as-built record. Several printed identifiers are incomplete (for example P-?, PIT-, LT- and #### placeholders), which makes it a useful uncertainty-handling test.
 
-A live Claude extraction returned 20 principal assets and 18 candidate connections. It explicitly identified incomplete tags and assigned internal IDs instead of claiming invented printed tags. The design is not compatible with the custom two-pump/filter station; station telemetry and 3D are therefore not attached to it. Extraction is a candidate interpretation, not an engineering certification.
+A prior-provider extraction returned 20 principal assets and 18 candidate connections. Those counts are historical evidence, not a new Gemma verification claim. It explicitly identified incomplete tags and assigned internal IDs instead of claiming invented printed tags. The design is not compatible with the custom two-pump/filter station; station telemetry and 3D are therefore not attached to it. Extraction is a candidate interpretation, not an engineering certification.
 
 Source metadata and limitations are in `data/reference/public-water-plan.source.json`. The drawing carries third-party copyright; no open redistribution license has been established. Raw PDF/PNG files are available locally for the requested test but ignored by Git. `scripts/download_references.py --public-water` retrieves and renders the public document for an individual evaluation; it does not grant redistribution rights.
 
 ## Toward a field-calibrated twin
 
 Connecting an actual facility requires a verified as-built topology, surveyed elevations, tank geometry, manufacturer pump curves, valve characteristics, pipe properties, time-aligned sensor mapping and measured boundary conditions. A drawing alone does not supply those. The application identifies the supported simulation as a representative model rather than making field-calibration claims.
+
+## Lower Fox River source-derived second case
+
+The [EPA-hosted Lower Fox River Water Treatment Plant Operation & Maintenance Plan](https://semspub.epa.gov/work/05/376921.pdf), Tetra Tech EC,2009, is the design source. The actual PDF and normal-operation drawings were inspected: PDF100 P103 (outside-scope upstream equipment), PDF101 P107 (modeled filtration/effluent route), §§6.5/6.6 PDF80–85, specifications PDF94/96–97, troubleshooting PDF104–106. One-based PDF page numbers are used throughout. Metadata, hash and crop coordinates are in `data/reference/lower-fox-river.source.json`. Local source PDF and raster crops retain their contractor attribution; no public-domain or open redistribution license is asserted.
+
+`backend/app/lower_fox.py` records reviewed source tags, instruments, source facts, excluded boundaries and explicit numerical assumptions. The shared bank DPIT-713 and individual PI gauges are distinct from model-only branch flow readings. All values are solver-generated, never historical measurements. The design's tank-capacity and motor-power discrepancies are recorded instead of silently resolved as calibration. The raw image extraction is preserved separately from engineer/source-reviewed augmentation. [Full source/model audit](lower-fox-model.md).

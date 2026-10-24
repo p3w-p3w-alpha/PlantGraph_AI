@@ -32,10 +32,30 @@ class SimulationAction(BaseModel):
 
 class ScenarioRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    scenario: Literal['baseline','filter_clogging','pump_degradation','valve_restriction','leak','low_tank']
+    scenario: Literal['baseline','filter_clogging','filter_fouling','pump_degradation','valve_restriction','leak','low_tank']
     severity: float = Field(0.7,ge=0,le=1)
+    asset_id: str | None = None
 
 
 class WhatIfRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     controls: ControlPatch
+
+
+class CaseSelection(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    case_id: Literal['atlas-station-01','lower-fox-river']
+
+
+class CaseIntervention(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    intervention: Literal['filter_changeover','pump_changeover']
+    asset_id: str | None = None
+
+
+class CaseControlPatch(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    online_filters: list[str] | None = None
+    duty_pumps: list[str] | None = None
+    control_policy: Literal['auto_level'] | None = None
+    reset_interlock: bool | None = None

@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[2]
 load_dotenv(ROOT/'.env')
 
 from . import plant_service
-from .schemas import ControlPatch, ScenarioRequest, SimulationAction, WhatIfRequest
+from .schemas import ControlPatch, ScenarioRequest, SimulationAction, WhatIfRequest,CaseSelection,CaseIntervention,CaseControlPatch
 from .simulation_service import ENGINE,simulation_service
 
 app=FastAPI(title='PlantGraph Twin',version='1.0.0',description='Graph-first engineering investigation backed by EPANET hydraulics.')
@@ -20,11 +20,34 @@ app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:5173','http:/
 
 @app.get('/api/health')
 def health():
-    return dict(status='ok',engine=ENGINE,ai_configured=bool(os.getenv('ANTHROPIC_API_KEY')),ai_model=os.getenv('ANTHROPIC_MODEL','claude-sonnet-5-5'))
+    from .ai import verification_status
+    return dict(status='ok',engine=ENGINE,ai_provider='gemma',ai_configured=bool((os.getenv('GOOGLE_API_KEY') or os.getenv('GEMINI_API_KEY') or '').strip()),ai_model=os.getenv('GEMMA_MODEL','gemma-4-31b-it'),ai_verification=verification_status())
 
 
 @app.get('/api/plant')
 def plant():return plant_service.get_plant()
+
+
+@app.get('/api/cases')
+def cases():return plant_service.list_cases()
+
+
+@app.post('/api/cases/select')
+def select_case(request:CaseSelection):
+    previous=plant_service.get_active_case_id()
+    try:
+        plant_service.select_case(request.case_id)
+        state=simulation_service.action('reset')
+        return dict(plant=plant_service.get_plant(),state=state)
+    except Exception as exc:
+        plant_service.select_case(previous)
+        raise HTTPException(503,'Selected case failed hydraulic initialization; previous case retained') from exc
+
+
+@app.post('/api/cases/what-if')
+def case_what_if(request:CaseIntervention):
+    try:return simulation_service.what_if_intervention(request.intervention,request.asset_id)
+    except (ValueError,RuntimeError) as exc:raise HTTPException(422,str(exc)) from exc
 
 
 @app.get('/api/state')
@@ -42,18 +65,25 @@ def action(request:SimulationAction):
 
 
 @app.post('/api/control')
-def control(request:ControlPatch):
-    return simulation_service.update_controls(request.model_dump(exclude_none=True))
+def control(request:ControlPatch|CaseControlPatch):
+    is_source=plant_service.get_active_case_id()=='lower-fox-river'
+    if is_source != isinstance(request,CaseControlPatch):raise HTTPException(422,'Control fields do not match the selected case')
+    try:return simulation_service.update_controls(request.model_dump(exclude_none=True))
+    except ValueError as exc:raise HTTPException(422,str(exc)) from exc
 
 
 @app.post('/api/scenario')
-def scenario(request:ScenarioRequest):return simulation_service.scenario(request.scenario,request.severity)
+def scenario(request:ScenarioRequest):
+    try:
+        if plant_service.get_active_case_id()=='lower-fox-river':return simulation_service.scenario(request.scenario,request.severity,request.asset_id)
+        return simulation_service.scenario(request.scenario,request.severity)
+    except ValueError as exc:raise HTTPException(422,str(exc)) from exc
 
 
 @app.post('/api/what-if')
 def what_if(request:WhatIfRequest):
     try:return simulation_service.what_if(request.controls.model_dump(exclude_none=True))
-    except RuntimeError as exc:raise HTTPException(422,str(exc)) from exc
+    except (RuntimeError,ValueError) as exc:raise HTTPException(422,str(exc)) from exc
 
 
 # The AI router is independently implemented; only a genuinely missing optional

@@ -1,95 +1,133 @@
 # PlantGraph Twin
 
-**Turn an engineering drawing into a traceable plant graph. Investigate the symptoms. Test a response with physics.**
+PlantGraph Twin helps an engineer understand a water plant, investigate a problem and calculate whether an intervention would help.
 
-PlantGraph Twin is a local engineering investigation prototype for a water pumping, filtration and distribution station. A process graph, P&ID, procedural 3D station, live sensor traces and AI investigator share the same equipment identities.
+It connects an engineering drawing, an equipment graph, an interactive 3D plant, hydraulic calculations and an AI investigator in one workspace.
 
-![PlantGraph engineering workspace](artifacts/workspace-graph.png)
+![Lower Fox River 3D workspace](artifacts/submission/normal/lowerfox_3d.png)
 
-## Run the presentation
+## The problem
 
-Prerequisites: Linux/macOS, Node.js 22+, npm, and [uv](https://docs.astral.sh/uv/). Python 3.12 is installed by the setup script.
+Engineers often have to move between drawings, equipment lists, measurements and operating instructions to understand a plant problem. These sources can be difficult to connect, especially when a problem affects equipment farther along the process.
+
+PlantGraph Twin brings those relationships together. An engineer can select equipment, follow the water path, inspect calculated measurements, compare possible causes and test a response before changing the operating simulation.
+
+## How it works
+
+1. Load a supported engineering drawing.
+2. Ask AI to identify equipment, tags and connections.
+3. Review the candidate graph and resolve missing or uncertain information.
+4. Explore the same equipment in the graph, drawing and 3D scene.
+5. Run normal operation and introduce a selected problem.
+6. Inspect pressures, flows, tank inventory, equipment states and alarms.
+7. Ask AI for hypotheses supported by the available evidence.
+8. Calculate an isolated intervention and compare it with the operating state.
+
+The engineer reviews the AI output. Graph validation checks compatibility. EPANET calculates the hydraulics. AI explains evidence and uncertainty rather than inventing pressures or flow rates.
+
+## Two supported cases
+
+### Atlas Water
+
+Atlas is an original representative station with one tank, two pumps, one filter, two valves and a distribution boundary. One pump operates while the other is on standby.
+
+The main investigation introduces filter restriction. The engineer can observe increased differential pressure and reduced delivery, inspect the connected equipment and compare a clean filter intervention.
+
+### Lower Fox River
+
+This case uses the actual Lower Fox River Water Treatment Plant Operation and Maintenance Plan hosted by the EPA. The modeled section contains three cartridge filters, an effluent tank, three effluent pumps, associated valves and discharge boundaries.
+
+The source is [EPA document 376921](https://semspub.epa.gov/work/05/376921.pdf). The normal operation drawing is P107 on PDF page 101. Sections 6.5, 6.6 and 8 describe filtration, effluent pumping and troubleshooting.
+
+Two independent investigations start from the same normal conditions. Filter fouling reduces tank inflow first, while stored water can maintain initial delivery. Pump degradation reduces discharge first, causing tank inventory to rise. The engineer can compare filter changeover or replacement with the healthy standby pump.
+
+The source does not provide every physical parameter. Missing pump curve points, hydraulic boundaries, pipe properties, elevations and controller gains are documented assumptions. The source drawing supports equipment and connectivity, not surveyed 3D geometry.
+
+## Explore the workspace
+
+Click an equipment mesh or label to select it. Double click to focus the camera. Drag to orbit and scroll to zoom. Selection connects the graph, source drawing, inspector and 3D plant.
+
+Directional arrows show calculated water flow. Inactive branches have no flow animation. Pausing playback freezes animation. Tank water level, pressure readings and computed warnings remain visible.
+
+Upstream and downstream tracing helps explain propagation. Ask AI and Test intervention are available from the equipment workspace. Predictions are shown separately and do not change the operating simulation.
+
+## Run locally
+
+Use Linux or macOS with Node.js 22 or newer, npm and uv installed. The setup script installs Python 3.12 and the project dependencies.
 
 ```bash
 ./scripts/setup.sh
-# Set ANTHROPIC_API_KEY in .env with your own credential.
+```
+
+Open the local `.env` file and configure your Google credential.
+
+```dotenv
+GOOGLE_API_KEY=your_google_api_key
+```
+
+The example configuration selects Gemma 4 26B A4B IT through the Gemini API. The exact API model identifier is in `.env.example` and can be changed with the backend `GEMMA_MODEL` setting.
+
+```bash
 ./scripts/present.sh
 ```
 
-Open **http://127.0.0.1:8000**. The six-slide pitch deck is at **http://127.0.0.1:8000/presentation**; API documentation is at **http://127.0.0.1:8000/docs**. To work on the frontend with live reload, run `./scripts/dev.sh` and open http://127.0.0.1:5173 instead. Use one launcher at a time.
+Open http://127.0.0.1:8000 for the application, http://127.0.0.1:8000/docs for the API reference and http://127.0.0.1:8000/presentation for the presentation slides.
 
-The application starts with a working solver-backed station even without AI access. Diagram extraction and the copilot make real paid Anthropic requests when a credential is configured; failures are shown explicitly. There is no simulated AI fallback.
+For frontend development, use `./scripts/dev.sh` and open http://127.0.0.1:5173. Use one launcher at a time.
 
-Configuration:
+Credentials are read by the backend. They must never appear in frontend configuration, screenshots, logs or committed files. The local `.env` file is ignored by Git.
 
-```dotenv
-ANTHROPIC_API_KEY=your-local-credential
-ANTHROPIC_MODEL=claude-sonnet-5-5
-```
+## Screenshots
 
-Credentials remain on the server. `.env`, uploaded images, and generated runtime data are ignored by Git. Never put a credential in frontend configuration.
+Open the [local screenshot gallery](artifacts/submission/index.html) to browse both workflows at full resolution.
 
-## What works
+[Normal operation](artifacts/submission/normal/) contains the source designs, engineering graphs, normal 3D plants and available extraction review views.
 
-- **Diagram understanding:** upload a PNG/JPEG, or use a supplied example. Claude extracts tagged equipment, process connections, instruments, source bounds and uncertainties. The engineer can correct the candidate before accepting it.
-- **Plant knowledge graph:** distinguish physical pipes, instrument signals, documented equipment rules, observed readings, and diagnostic hypotheses. Select equipment, trace upstream/downstream paths, and inspect its source region.
-- **Hydraulic station:** EPANET 2.2 through WNTR solves the actual operating point. Two parallel duty/standby pumps, a finite tank, filter resistance, control and isolation valves, and a downstream-head boundary.
-- **Interactive 3D:** orbit, zoom, focus, camera presets, clickable equipment, water level, computed flow animation, equipment status, alarm highlighting and filter pressure evidence. The layout is illustrative, not a surveyed facility.
-- **Frozen v1 incident:** filter restriction, with normal operation for comparison. Speed, duty selection and valve/filter controls change real model parameters. Additional scenarios remain backend regression cases outside the presentation workflow.
-- **What-if comparison:** solve an intervention from the same current inventory without changing the operating station. Compare delivery, head and differential pressure. Ask Claude to interpret server-recomputed results.
-- **Grounded copilot:** uses topology, recent measurements and documented rules. The diagnostic context excludes the injected scenario identity and latent failure parameters. Explanations remain hypotheses, with evidence and proposed experiments.
-- **Evidence export:** download a JSON investigation record with the plant, current state, extraction, rules and comparison.
+[Problem investigation](artifacts/submission/problematic/) contains fault evidence, connected equipment, AI explanations and calculated intervention comparisons.
 
-## A repeatable demo
+The application is configured for Gemma 4. AI screenshots captured with the temporary Claude Sonnet 5.5 environment retain their visible Claude attribution and are identified in the capture manifest. Those screenshots are not evidence of Gemma responses. The temporary recording environment is separate from the submitted application configuration.
 
-1. Inspect the process graph and select **F-101**. Trace upstream and downstream.
-2. Open **P&ID** and choose **Extract station with Claude**. Review the equipment and connections, then confirm. The accepted topology must match the supported hydraulic template before readings are bound.
-3. Play the simulation, then inject **Filter restriction**. Delivery falls from about **69.39 to 52.48 m³/h**, while filter differential rises from **0.301 to 1.377 bar** at the initial tank level.
-4. Open the **3D twin**. Select the filter and examine the pressure evidence and connected inspector.
-5. Ask the AI investigator why delivery fell and which experiment distinguishes a filter issue from a pump issue.
-6. Run the clean-filter intervention and compare the predicted recovery without changing the operating station.
-7. Export the investigation, then reset to baseline.
+## Technologies
 
-See [the five-minute demo script](docs/demo-script.md) for presentation wording and questions.
+The frontend uses React 19, TypeScript, Vite, React Flow, React Three Fiber, Three.js and Recharts.
 
-[Watch/download the recorded complete workflow](artifacts/demo.webm). It uses genuine Claude image extraction and investigation plus actual EPANET results; no responses or readings are mocked.
+The backend uses Python 3.12, FastAPI, Pydantic and NetworkX. WNTR 1.5 and EPANET 2.2 solve the hydraulic operating points. Tank inventory is calculated from inflow and outflow over time.
 
-## Engineering and data honesty
+Gemma 4 through the Google Gemini API interprets engineering images and explains supplied evidence. Pydantic validates generated JSON. The engineer reviews topology before it can be bound to the supported hydraulic model. Provider errors are shown explicitly and no automatic provider fallback is used.
 
-This is a **representative simulation twin**, not a field-calibrated utility asset. Physical parameters are illustrative and documented. The original P&ID, hydraulic topology and 3D scene describe the same demonstration station. No language model calculates pressures or invents telemetry.
-
-A public Utah water-facility design and a CADXChange heating-system sample are used as independent extraction tests. Unfamiliar or incomplete equipment remains reviewable as a graph but cannot silently inherit this station's measurements or geometry. The Utah drawing requires an optional download because its redistribution license has not been established:
+## Tests and limitations
 
 ```bash
-.venv/bin/python scripts/download_references.py --public-water
-```
-
-BATADAL/C-Town files are included as optional external benchmark references. They are simulation-generated and are **not** claimed to match the custom filtration station. [Data provenance and attribution](docs/data-sources.md).
-
-## Test
-
-```bash
-PYTHONPATH=backend .venv/bin/pytest backend/tests -q
+PYTHONPATH=backend .venv/bin/pytest backend/tests
 cd frontend
 npm run build
-npx playwright install chromium
-# Start the dev launcher in another terminal first.
 npm run test:e2e
-# Optional: includes paid image extraction and copilot requests.
-LIVE_AI=1 npm run test:e2e
 ```
 
-The tests cover hydraulic responses, mass balance, interlocks, timing, input validation, pure comparisons, graph binding, diagnostic context, UI controls, graph/3D selection, export and optional live AI integration. Test results and presentation evidence are recorded in [validation.md](docs/validation.md): **43 backend tests and 10 production-browser tests passed**, including live Anthropic requests. A complete recorded rehearsal is available at `artifacts/demo.webm`.
+The backend suite currently passes 91 tests. The latest full browser run passed 22 of 23 checks. The remaining check encountered a Google rate limit during the Lower Fox investigation. Request context has since been reduced and bounded quota retries added. That complete live Gemma workflow must be verified again before claiming it passes.
 
-## Architecture and limits
+All operational readings are generated by the hydraulic solver. Neither case replays a recorded utility incident. No Atlas or BATADAL readings are assigned to Lower Fox. Source facts, assumptions, calculated observations and AI hypotheses remain separate.
 
-React 19 / TypeScript / React Flow / React Three Fiber / Three.js / Recharts frontend. FastAPI / Pydantic / NetworkX backend. WNTR 1.5 / EPANET 2.2 hydraulic engine. Anthropic Python SDK with **Claude Sonnet 5.5 (`claude-sonnet-5-5`)** for image extraction and engineering explanations. No model training is required.
+This is a local engineering prototype with one shared session. It is not a calibrated utility twin, a construction design, a water quality model or a system controlling real equipment. General simulation of arbitrary uploaded diagrams is not supported. Compatible equipment templates and reviewed engineering parameters are required.
 
-One local shared session, in-memory history and review state, local image uploads. Restart clears session state. Quasi-steady hydraulics with finite tank integration; no CFD, water hammer, treatment chemistry or automated control of real hardware. General P&ID-to-simulation generation would require additional equipment models and engineering parameters.
+The [documentation folder](docs/) contains architecture, source attribution, hydraulic assumptions, validation results, demo instructions and submission status.
 
-- [Architecture](docs/architecture.md)
-- [Hydraulic equations and parameters](docs/hydraulic-model.md)
-- [Data sources](docs/data-sources.md)
-- [API contract](docs/contract.md)
+## Repository structure
 
-Original code and station drawing are MIT licensed. Third-party references retain their own terms. Claude is a proprietary model: this Anthropic-only configuration does not satisfy a challenge requiring Gemma 4 or central open-weight AI, even though the application code is open source.
+`frontend` contains the interface, graphs, 3D equipment and browser tests.
+
+`backend` contains the API, plant configurations, hydraulic services, AI integration and backend tests.
+
+`data` contains supported drawings, source metadata, model inputs and external references.
+
+`docs` contains engineering explanations and presentation material.
+
+`artifacts/submission` contains the organized screenshot evidence.
+
+`scripts` contains setup, startup, source retrieval and packaging tools.
+
+## License and submission
+
+Original application code and the Atlas drawing use the MIT license. External engineering drawings and datasets retain their own rights and attribution. EPA hosting does not mean a contractor drawing is public domain.
+
+This repository contains the source code and screenshot evidence for publication. Event submission is a separate step. A working application or qualifying model integration alone does not establish hackathon eligibility. The organizer also requires the repository, license, evidence and submission within its deadline.

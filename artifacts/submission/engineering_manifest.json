@@ -1,0 +1,113 @@
+{
+  "captured_at": "2026-10-24T16:37:51.155Z",
+  "application_ai_configuration": "Gemma 4 26B A4B through Gemini API; these screenshots contain no AI responses",
+  "source_url": "https://semspub.epa.gov/work/05/376921.pdf",
+  "source_rights": "Tetra Tech engineering drawing hosted by EPA; third party rights retained",
+  "screenshots": [
+    {
+      "file": "normal/atlas_design.png",
+      "note": "Original representative engineering design.",
+      "captured_at": "2026-10-24T16:37:01.602Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "normal/atlas_graph.png",
+      "note": "Canonical Atlas equipment and computed normal state.",
+      "captured_at": "2026-10-24T16:37:02.686Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "normal/atlas_3d.png",
+      "note": "Atlas procedural scene and visible flow arrows.",
+      "captured_at": "2026-10-24T16:37:06.479Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/atlas_filter_3d.png",
+      "note": "Atlas filter restriction; measured labels are solver results, highlighted downstream path.",
+      "captured_at": "2026-10-24T16:37:10.319Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/atlas_filter_graph.png",
+      "note": "Restricted filter graph, alarms, calculated pressure and flow.",
+      "captured_at": "2026-10-24T16:37:13.848Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/atlas_comparison.png",
+      "note": "Pure clean filter comparison; operating station unchanged.",
+      "captured_at": "2026-10-24T16:37:15.873Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "normal/lowerfox_design.png",
+      "note": "Actual EPA hosted P107 crop, modeled boundary and source link.",
+      "captured_at": "2026-10-24T16:37:17.618Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "normal/lowerfox_graph.png",
+      "note": "Source reviewed graph with three filters, tank, three pumps and valves.",
+      "captured_at": "2026-10-24T16:37:19.462Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "normal/lowerfox_3d.png",
+      "note": "Configuration driven Lower Fox scene; CF3 and P2C inactive.",
+      "captured_at": "2026-10-24T16:37:24.392Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_filter_inventory.png",
+      "note": "Computed inventory warning: inflow falls while tank buffers delivery.",
+      "captured_at": "2026-10-24T16:37:28.480Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_filter_3d.png",
+      "note": "Filter computed inlet, outlet and differential with downstream tracing.",
+      "captured_at": "2026-10-24T16:37:32.991Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_filter_comparison.png",
+      "note": "Independent CF1 to clean CF3 changeover; same tank and VFD initial conditions.",
+      "captured_at": "2026-10-24T16:37:37.719Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_pump_3d.png",
+      "note": "Independent duty pump degradation; computed delivery falls and tank inventory rises.",
+      "captured_at": "2026-10-24T16:37:43.753Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_pump_graph.png",
+      "note": "Same source model, linked pump state and upstream paths.",
+      "captured_at": "2026-10-24T16:37:46.977Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    },
+    {
+      "file": "problematic/lowerfox_pump_comparison.png",
+      "note": "Pure healthy spare P2C comparison; operating case unchanged.",
+      "captured_at": "2026-10-24T16:37:51.154Z",
+      "data": "EPANET computed observations; no field measurements",
+      "ai_provider": null
+    }
+  ]
+}

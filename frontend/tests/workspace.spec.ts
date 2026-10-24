@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import path from 'node:path';
 
 test.beforeEach(async({page,request})=>{
- await request.post('/api/simulation/action',{data:{action:'reset'}});
+ await request.post('/api/cases/select',{data:{case_id:'atlas-station-01'}});
  await page.goto('/');
  await expect(page.getByText('Understand the plant.')).toBeVisible();
 });
@@ -100,8 +100,8 @@ test('unmapped imported drawing clears prior context and cannot inherit station 
  await expect(page.locator('.asset-identity h2')).toHaveText('HX-901');
 });
 
-test('live Claude extracts the actual station image and engineer binds it',async({page})=>{
- test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make paid Anthropic calls.');
+test('live Gemma extracts the actual station image and engineer binds it',async({page})=>{
+ test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make real Gemini API calls.');
  await page.getByRole('button',{name:'Try the station P&ID'}).click();
  await expect(page.getByRole('heading',{name:'Review the extracted plant.'})).toBeVisible({timeout:110000});
  const assets=JSON.parse(await page.getByRole('textbox',{name:'Review extracted equipment'}).inputValue());
@@ -112,7 +112,7 @@ test('live Claude extracts the actual station image and engineer binds it',async
 });
 
 test('live copilot supplies evidence and a typed diagnostic action',async({page})=>{
- test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make paid Anthropic calls.');
+ test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make real Gemini API calls.');
  await page.locator('.scenario-button').click();
  await page.locator('.scenario-menu button').filter({hasText:'Filter restriction'}).click();
  await page.getByRole('button',{name:'AI investigator',exact:true}).click();
@@ -120,12 +120,12 @@ test('live copilot supplies evidence and a typed diagnostic action',async({page}
  await page.getByRole('button',{name:'Send investigation question'}).click();
  await expect(page.locator('.evidence-list')).toBeVisible({timeout:110000});
  await expect(page.locator('.assistant-text')).toContainText(/filter|pressure/i);
- await expect(page.locator('.model-attribution')).toContainText('anthropic');
+ await expect(page.locator('.model-attribution')).toContainText('gemma');
  await page.screenshot({path:'../artifacts/ai-investigation.png',fullPage:true});
 });
 
 test('live natural-language valve experiment reaches a real isolated hydraulic comparison',async({page,request})=>{
- test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make paid Anthropic calls.');
+ test.skip(process.env.LIVE_AI!=='1','Set LIVE_AI=1 to make real Gemini API calls.');
  await page.getByRole('button',{name:'AI investigator',exact:true}).click();
  await page.getByRole('textbox',{name:'Ask the engineering investigator'}).fill('What happens if V-101 is set to 30 percent opening? Give me a what_if action with valve_open_pct 30, then let the hydraulic solver calculate the result.');
  await page.getByRole('button',{name:'Send investigation question'}).click();

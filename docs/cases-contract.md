@@ -1,0 +1,36 @@
+# Multi-case integration contract — October 24 extension
+
+Owners: backend agent owns backend except app/ai.py and tests/test_ai.py; frontend agent owns App/CaseWorkspace/ProcessGraph/styles; twin agent owns TwinScene and GenericTwinScene; root owns AI, shared TS types (coordinate additive updates), browser tests and packaging. Preserve Atlas API behavior/tests.
+
+## Public API and canonical case model
+
+- GET /api/cases => {cases:[{id,name,description,source_url?,source_pages?:number[],classification}]}; IDs `atlas-station-01` and `lower-fox-river`.
+- POST /api/cases/select {case_id} => {plant:Plant,state:CaseState}; resets selected simulation to normal and clears incompatible history/review/conversation in frontend. GET /api/plant and /api/state return selected case. Backend `plant_service.get_plant()` returns selected canonical config. All existing /simulation/action,/history,/scenario,/what-if routes dispatch active service; old Atlas contracts unchanged.
+- Both cases have canonical Plant {id,name,description,assets,connections,sensors,pid_url,parameters,...}. Add source_facts:[{id,statement,pdf_page,section}], assumptions:[{id,statement}], operating_rules:[...], scenes illustrative.
+- Asset {id,type,name,subsystem,description,position:{x,y},scene_position?:[x,y,z],source_bbox?:[l,t,r,b],source_refs?:[{pdf_page,section?,drawing?}],role?:string}. Supported types tank/pump/filter/valve/outlet/junction; upstream boundary may use outlet type with role=upstream_boundary. Explicitly include modeled source valves in assets/connections and hydraulic links, rather than claiming complete full-plant P&ID.
+- Sensor {id,type,asset_id,unit,label,source_refs?,provenance:'computed_proxy_of_documented_instrument'|'computed_model_only'}. All Case2 live values are computed, never field telemetry.
+- Case2 state uses `case_id`, timestamp,elapsed_s,playing,speed,revision,mode:'simulation',engine,solver_ok,solver_message,provenance,alarms,equipment as before. Case2 has **generic metrics** {inflow_m3h,outflow_m3h,tank_level_m,tank_level_pct,filter_bank_dp_bar,controller_effort_pct,mass_balance_m3h}, `asset_values:Record<id,{flow_m3h?,inlet_bar?,outlet_bar?,dp_bar?,level_m?,level_pct?,speed_pct?}>`, `readings:[{sensor_id,asset_id,value,unit,provenance,source_ref?}]`, `controls:{online_filters:string[],duty_pumps:string[],control_policy:string}`. No PT-101/P-101A/T-101 identifiers in Case2 payloads.
+- Case2 POST /api/scenario {scenario:'baseline'|'filter_fouling'|'pump_degradation',asset_id?:string,severity?:number}; each problem starts independently from identical validated normal initial state (including clock/controller/tank). Store injected target/health/resistance privately, never diagnostic context.
+- POST /api/cases/what-if {intervention:'filter_changeover'|'pump_changeover',asset_id?:string} => {baseline:CaseState,predicted:CaseState,deltas:Record<string,number>,summary,initial_conditions,intervention,provenance}; clone current case and conditions; do not mutate operating state/history. Filters swap selected online vessel to healthy offline; pumps swap selected duty pump to healthy spare. Report immediate hydraulics and inventory rate accurately, no invented immediate delivery drop for upstream fouling.
+- Case2 normal validated with two filters online / third offline and two duty pumps / third spare. Model supported source routing and isolate bypasses; no upstream treatment/chemistry/backwash/sump loop.
+- `simulation_service` exported facade must dispatch get_state(advance=False),get_history,what_if as needed by root AI. Add get_active_case_id() and get_case_plant(case_id) helper in plant_service, or report equivalents immediately. Root updates AI normal-reference/rules and reviewed-document binding per case.
+
+## Frontend and scene
+
+Clear case selector always visible. Keep Atlas UI as regression; new generic CaseWorkspace can consume CaseState. App fetches /cases, POSTselect then mounts workspace by plant.id so no incompatible history/selection/AI/results persist. New component never reads Atlas-specific `values.pt101_bar` or `controls.active_pump`.
+
+Generic 3D consumes plant.assets/connections/scene_position and state.asset_values/equipment. Every filter/pump/tank/valve and pipe generated from canonical config, not fixed IDs. Props: {plant,state,selectedId,onSelect,highlightedIds?,showLabels?,onTrace?,onAskAI?,onTestIntervention?}; types may be structural generic. Existing AtlasTwin may be separated behind an explicit Atlas adapter to preserve verified behavior; shared renderer must have no Atlas IDs.
+
+Root AI: POST /ai/chat supports existing shape; active canonical case determines source rules and context; document_id binds current case. Exclude private fault identity/latent params. Include case2 computed readings explicitly marked, and source facts vs illustrative assumptions. Shared DPIT-713 does not identify a particular CF without extra branch evidence. /ai/extract-demo add source:'lower-fox' referencing selected source-sheet crop/full source. Extraction results still require review; validate **scoped** equipment against current case, don't attach another case's readings.
+
+## Verified document starting facts — check original text/images
+
+Source EPA https://semspub.epa.gov/work/05/376921.pdf (117 PDF pages), local data/reference/lower-fox-river-376921.pdf; extracted text /tmp/lower-fox.txt. Source page images data/pid/lower-fox/page-100.png (P103, upstream outside boundary) and page-101.png (P107, modeled subsystem plus out-of-scope loops). Root inspected both. Drawings and §§6.5/6.6/7.5/7.7/8 must be checked by backend before assumptions.
+
+§6.5 printed73–75 / PDF80–82: CF1–CF3 parallel, inlet/outlet manual butterfly valves 16"-BFV-CF{n}-1/-2. PI-710A/B,PI-711A/B,PI-712A/B individual inlet/outlet gauges. DPIT-713 is shared across bank; normal table10psi, high alarm DPAH-71330psi. At least one vessel anticipated offline; **choosing CF3 offline is an illustrative selection, not a source-mandated identity**. Manual sequential isolation/clean cartridge changeover until alarm clears. No filter interlocks.
+
+§6.6 printed75–78 / PDF82–85: ET, P-2A/B/C, any2 operating+third spare; P107 labelsP-2C SPARE. LE/LIT-701 level, LIC-701 adjusts VFD speed, level safety thresholds, FE/FIT/FQIT-730 outletflow, PI-721A/B/C discharge pressures, SIC-720A/B/C. Each branch suction isolation18"-BFV-2X, check10"-CV-2X, dischargeMOV10"-BFV-2X; MOV opens before pump starts and closes after stop (delay operator-adjustable, unspecified). Source minimumeffluent3000USgpm interlock must be modeled or explicitly described as deferred; never silently ignore it. LL3ft, HH19ft, normallevel15ft; lowalarm5ft,high18ft.
+
+§7.5 printed87 / PDF94: eachCF maximum3500gpm. §7.7 printed89 / PDF96 supplies ET and pump specification—backend inspect this rather than inventing all dimensions/curvepoints. One ratedpump point is not a full pump curve; added curvepoints assumptions.
+
+§8 printed97–99 / PDF104–106: pump lowflow alternatives include closedvalves, leak, VFDsetting; filter highinletpressure alternatives include cartridge plugging and closed valves. Preserve competing hypotheses. No historicalincidentmeasurements supplied.

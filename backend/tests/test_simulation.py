@@ -48,6 +48,35 @@ def test_standby_does_not_fix_filter_restriction(station):
     assert standby==pytest.approx(restricted,rel=1e-5)
 
 
+def test_filter_workflow_has_consistent_duty_standby_and_delivery_for_3d(station):
+    state=station.scenario('filter_clogging')
+    assert state['equipment']['P-101A']['status']=='running'
+    assert state['equipment']['P-101A']['value']==100
+    assert state['equipment']['P-101B']['status']=='standby'
+    assert state['equipment']['P-101B']['value']==0
+    assert station.pump_outflow_m3s*3600==pytest.approx(state['values']['delivery_m3h'],abs=.002)
+    switched=station.update_controls({'active_pump':'P-101B'})
+    assert switched['equipment']['P-101A']['status']=='standby'
+    assert switched['equipment']['P-101A']['value']==0
+    assert switched['equipment']['P-101B']['status']=='running'
+    assert switched['values']['delivery_m3h']==pytest.approx(state['values']['delivery_m3h'],rel=1e-5)
+
+
+def test_paused_is_frozen_time_not_zero_hydraulic_operating_point(station,monkeypatch):
+    clock=[1000.0]
+    monkeypatch.setattr(time,'monotonic',lambda:clock[0])
+    state=station.scenario('filter_clogging')
+    assert not state['playing']
+    assert state['values']['flow_m3h']>0
+    assert state['equipment']['P-101A']['status']=='running'
+    clock[0]+=100
+    later=station.get_state()
+    assert later['values']==state['values']
+    assert later['timestamp']==state['timestamp']
+    assert later['elapsed_s']==state['elapsed_s']
+    assert later['equipment']==state['equipment']
+
+
 def test_leak_conserves_mass_between_pump_and_delivery(station):
     state=station.scenario('leak')
     v=state['values']

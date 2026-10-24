@@ -41,5 +41,32 @@ PARAMETERS = {
 }
 
 
-def get_plant():
+def get_atlas_plant():
     return deepcopy(dict(id='atlas-station-01',name='Atlas Water / Station 01',description='A physics-based water pumping, filtration and distribution investigation station.',assets=ASSETS,connections=CONNECTIONS,sensors=SENSORS,pid_url='/data/pid/station.svg',parameters=PARAMETERS))
+
+
+_active_case_id='atlas-station-01'
+
+
+def get_active_case_id():return _active_case_id
+
+
+def get_case_plant(case_id):
+    if case_id=='atlas-station-01':return get_atlas_plant()
+    if case_id=='lower-fox-river':
+        from .lower_fox import get_lower_fox_plant
+        return get_lower_fox_plant()
+    raise ValueError('Unknown case identifier')
+
+
+def select_case(case_id):
+    global _active_case_id
+    get_case_plant(case_id)
+    _active_case_id=case_id
+
+
+def get_plant():return get_case_plant(_active_case_id)
+
+
+def list_cases():
+    return {'cases':[{'id':case_id,**{key:plant[key] for key in ['name','description','source_url','source_pages','classification'] if key in plant}} for case_id in ['atlas-station-01','lower-fox-river'] for plant in [get_case_plant(case_id)]]}

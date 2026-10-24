@@ -23,6 +23,24 @@ def test_health_plant_and_state_contract(client):
     assert {'timestamp','values','controls','equipment','alarms','provenance'}<=state.keys()
 
 
+@pytest.mark.parametrize('credential_name',['GOOGLE_API_KEY','GEMINI_API_KEY'])
+def test_health_reports_only_gemma_credentials(client,monkeypatch,credential_name):
+    monkeypatch.delenv('GOOGLE_API_KEY',raising=False)
+    monkeypatch.delenv('GEMINI_API_KEY',raising=False)
+    monkeypatch.delenv('GEMMA_MODEL',raising=False)
+    monkeypatch.setenv('ANTHROPIC_API_KEY','ignored-test-credential')
+    health=client.get('/api/health').json()
+    assert health['ai_provider']=='gemma'
+    assert not health['ai_configured']
+    assert health['ai_model']=='gemma-4-31b-it'
+    monkeypatch.setenv(credential_name,'test-google-credential')
+    monkeypatch.setenv('GEMMA_MODEL','gemma-4-26b-a4b-it')
+    health=client.get('/api/health').json()
+    assert health['ai_configured']
+    assert health['ai_model']=='gemma-4-26b-a4b-it'
+    assert 'test-google-credential' not in str(health)
+
+
 @pytest.mark.parametrize('payload',[{'pump_speed_pct':111},{'valve_open_pct':-1},{'pump_health_pct':0},{'filter_resistance':999},{'active_pump':'P-999'},{'arbitrary':1}])
 def test_invalid_controls_rejected_without_changing_state(client,payload):
     before=client.get('/api/state').json()['controls']

@@ -1,0 +1,45 @@
+{
+  "title": "Lower Fox River Water Treatment Plant Operation & Maintenance Plan, Volume I",
+  "source_url": "https://semspub.epa.gov/work/05/376921.pdf",
+  "publisher": "EPA SEMS document repository; prepared by Tetra Tech EC",
+  "date": "2009",
+  "document_id": "376921",
+  "classification": "Real-design-grounded simulation; no historical incident measurements",
+  "sha256": "50cd5340e71c7e8a3a7394d38442588bef6fbaaf9a7f1ab8343cb4a39c72c3ae",
+  "source_pages": {
+    "normal_operation_p103": 100,
+    "normal_operation_p107": 101,
+    "cartridge_filtration": [
+      80,
+      81,
+      82
+    ],
+    "effluent_tank_pumps": [
+      82,
+      83,
+      84,
+      85
+    ],
+    "cartridge_specification": 94,
+    "effluent_specification": [
+      96,
+      97
+    ],
+    "troubleshooting": [
+      104,
+      105,
+      106
+    ]
+  },
+  "subset_image": "/data/pid/lower-fox/subsystem.png",
+  "crop": {
+    "pdf_page": 101,
+    "render_scale_long_edge": 3200,
+    "x": 170,
+    "y": 50,
+    "width": 1900,
+    "height": 1740
+  },
+  "boundary": "Carbon-adsorber effluent connection through cartridge filters and effluent tank/pumps to common discharge; upstream treatment, chemicals, backwash, sumps and compressor excluded",
+  "rights": "Publicly EPA-hosted contractor engineering document. Retain Tetra Tech attribution; no assertion that contractor drawings are public domain."
+}
