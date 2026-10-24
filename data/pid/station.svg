@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+ <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#e7edf1" stroke-width=".6"/></pattern>
+ <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5 0 10Z" fill="#203847"/></marker>
+ <style>text{font-family:Arial,Helvetica,sans-serif;fill:#193342}.pipe{fill:none;stroke:#203847;stroke-width:3;stroke-linejoin:round}.signal{fill:none;stroke:#51798d;stroke-width:2;stroke-dasharray:7 5}.equipment{fill:#f4f8fa;stroke:#203847;stroke-width:3}.tag{font-size:21px;font-weight:700;letter-spacing:.3px}.name{font-size:14px;fill:#4b6678}.small{font-size:12px;fill:#4b6678}.instrument{fill:#fff;stroke:#365c70;stroke-width:2}.instrumentText{font-size:14px;text-anchor:middle;font-weight:700}</style>
+</defs>
+<rect width="1600" height="900" fill="#fff"/>
+<rect x="30" y="30" width="1540" height="840" fill="url(#grid)" stroke="#314f61" stroke-width="2"/>
+<rect x="31" y="31" width="1538" height="118" fill="#f3f7fa"/>
+<text x="65" y="76" font-size="15" letter-spacing="4" fill="#4a7284">ATLAS WATER / STATION 01</text>
+<text x="65" y="118" font-size="30" font-weight="700">PUMPING &amp; FILTRATION — PIPING AND INSTRUMENTATION DIAGRAM</text>
+<text x="1520" y="75" text-anchor="end" class="small">DRAWING PG-WS-001</text><text x="1520" y="98" text-anchor="end" class="small">REV A · 24 OCT 2026</text><text x="1520" y="121" text-anchor="end" class="small">ILLUSTRATIVE DEMONSTRATION MODEL</text>
+<!-- Tank and level measurement -->
+<path d="M100 350Q180 310 260 350V545Q180 585 100 545Z" class="equipment"/>
+<path d="M100 350Q180 390 260 350" fill="none" stroke="#203847" stroke-width="2"/>
+<path d="M103 457Q180 482 257 457V542Q180 578 103 542Z" fill="#d5eef4"/>
+<path d="M103 457Q180 482 257 457" fill="none" stroke="#5b9bb0" stroke-width="2"/>
+<text x="180" y="405" class="tag" text-anchor="middle">T-101</text><text x="180" y="431" class="name" text-anchor="middle">Raw water tank</text>
+<text x="180" y="609" class="small" text-anchor="middle">Ø 6 m · INITIAL LEVEL 4 m</text>
+<path d="M180 330V254" class="signal"/>
+<circle cx="180" cy="228" r="27" class="instrument"/><text x="180" y="226" class="instrumentText">LT</text><text x="180" y="243" font-size="11" text-anchor="middle">101</text><text x="180" y="185" class="small" text-anchor="middle">LT-101 · TANK LEVEL</text>
+<!-- Process path and explicit suction / discharge tees -->
+<path d="M260 510H335V365H468" class="pipe"/>
+<path d="M335 510V620H468" class="pipe"/>
+<circle cx="335" cy="510" r="5" fill="#203847"/>
+<text x="335" y="478" class="small" text-anchor="middle">J-SUCTION</text>
+<path d="M375 365H423" class="pipe" marker-end="url(#arrow)"/><path d="M375 620H423" class="pipe" marker-end="url(#arrow)"/>
+<!-- Pumps -->
+<circle cx="510" cy="365" r="42" class="equipment"/>
+<path d="M487 390L534 365 487 340Z" fill="#d6e6ed" stroke="#203847" stroke-width="2"/>
+<path d="M480 406L470 425H550L540 406" fill="#e8f0f4" stroke="#203847" stroke-width="2"/>
+<text x="510" y="292" class="tag" text-anchor="middle">P-101A</text><text x="510" y="317" class="name" text-anchor="middle">Feed pump A · duty</text>
+<circle cx="510" cy="620" r="42" class="equipment"/>
+<path d="M487 645L534 620 487 595Z" fill="#d6e6ed" stroke="#203847" stroke-width="2"/>
+<path d="M480 661L470 680H550L540 661" fill="#e8f0f4" stroke="#203847" stroke-width="2"/>
+<text x="510" y="550" class="tag" text-anchor="middle">P-101B</text><text x="510" y="575" class="name" text-anchor="middle">Feed pump B · standby</text>
+<path d="M552 365H685V510H842" class="pipe"/><path d="M552 620H685V510" class="pipe"/>
+<circle cx="685" cy="510" r="5" fill="#203847"/><text x="685" y="478" class="small" text-anchor="middle">J-DISCHARGE</text>
+<path d="M713 510H759" class="pipe" marker-end="url(#arrow)"/>
+<!-- Filter and two pressure instrument taps -->
+<rect x="842" y="416" width="116" height="188" rx="39" class="equipment"/>
+<path d="M855 453H945M855 565H945" stroke="#365c70" stroke-width="2"/>
+<path d="M865 468L935 548M865 488L917 548M883 468L935 530M865 508L900 548M902 468L935 507" stroke="#9bb8c7" stroke-width="2"/>
+<text x="900" y="357" class="tag" text-anchor="middle">F-101</text><text x="900" y="383" class="name" text-anchor="middle">Pressure filter vessel</text>
+<text x="900" y="641" class="small" text-anchor="middle">HYDRAULIC RESISTANCE MODEL</text>
+<path d="M958 510H1060" class="pipe"/>
+<circle cx="790" cy="510" r="4" fill="#203847"/><path d="M790 510V254" class="signal"/>
+<circle cx="790" cy="228" r="27" class="instrument"/><text x="790" y="226" class="instrumentText">PT</text><text x="790" y="243" font-size="11" text-anchor="middle">101</text><text x="790" y="185" class="small" text-anchor="middle">PT-101 · FILTER INLET</text>
+<circle cx="1007" cy="510" r="4" fill="#203847"/><path d="M1007 510V254" class="signal"/>
+<circle cx="1007" cy="228" r="27" class="instrument"/><text x="1007" y="226" class="instrumentText">PT</text><text x="1007" y="243" font-size="11" text-anchor="middle">102</text><text x="1007" y="185" class="small" text-anchor="middle">PT-102 · FILTER OUTLET</text>
+<!-- Control valve -->
+<path d="M1060 488L1100 510 1060 532ZM1140 488L1100 510 1140 532Z" class="equipment"/>
+<path d="M1100 510V458" class="pipe"/><path d="M1078 458Q1100 430 1122 458Z" class="equipment"/>
+<text x="1100" y="577" class="tag" text-anchor="middle">V-101</text><text x="1100" y="600" class="name" text-anchor="middle">Control valve</text>
+<path d="M1140 510H1230" class="pipe"/>
+<!-- Isolation valve -->
+<path d="M1230 488L1268 510 1230 532ZM1306 488L1268 510 1306 532Z" class="equipment"/>
+<path d="M1268 510V465M1248 465H1288" class="pipe"/>
+<text x="1268" y="577" class="tag" text-anchor="middle">V-102</text><text x="1268" y="600" class="name" text-anchor="middle">Isolation valve</text>
+<path d="M1306 510H1510" class="pipe" marker-end="url(#arrow)"/>
+<!-- Flow instrument -->
+<circle cx="1373" cy="510" r="11" fill="#fff" stroke="#365c70" stroke-width="2"/><path d="M1373 499V379" class="signal"/>
+<circle cx="1373" cy="352" r="27" class="instrument"/><text x="1373" y="350" class="instrumentText">FT</text><text x="1373" y="367" font-size="11" text-anchor="middle">101</text><text x="1373" y="309" class="small" text-anchor="middle">FT-101 · DELIVERY FLOW</text>
+<text x="1460" y="459" class="tag" text-anchor="middle">OUTLET</text><text x="1460" y="481" class="name" text-anchor="middle">Distribution boundary</text><text x="1460" y="558" class="small" text-anchor="middle">FIXED HEAD 20 m</text>
+<text x="720" y="701" class="small">PROCESS WATER · DN100 · HAZEN–WILLIAMS C = 130 · NOMINAL FLOW DIRECTION SHOWN</text>
+<!-- Drawing footer / legend -->
+<rect x="31" y="745" width="1538" height="124" fill="#f3f7fa" stroke="#314f61" stroke-width="1"/>
+<text x="65" y="779" font-size="13" font-weight="700" letter-spacing="1.5">DRAWING LEGEND</text>
+<path d="M65 803H130" class="pipe" marker-end="url(#arrow)"/><text x="145" y="808" class="small">Process pipe / intended flow</text>
+<path d="M65 834H130" class="signal"/><text x="145" y="839" class="small">Instrument sensing connection</text>
+<circle cx="405" cy="803" r="4" fill="#203847"/><text x="425" y="808" class="small">Connected junction / instrument tap</text>
+<circle cx="405" cy="833" r="13" class="instrument"/><text x="405" y="837" font-size="10" text-anchor="middle">PT</text><text x="425" y="839" class="small">Instrument bubble · tag identified above</text>
+<path d="M768 763V851" stroke="#b8cbd5"/>
+<text x="795" y="780" font-size="13" font-weight="700">ENGINEERING NOTES</text>
+<text x="795" y="805" class="small">1. One duty pump operates at a time; standby selection is manual.</text>
+<text x="795" y="826" class="small">2. Filter differential pressure = PT-101 − PT-102 at equal tap elevation.</text>
+<text x="795" y="847" class="small">3. Original demonstration design. Not a certified construction drawing or real facility record.</text>
+</svg>

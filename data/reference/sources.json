@@ -1,0 +1,35 @@
+[
+  {
+    "file": "cadxchange-feed-heating.png",
+    "title": "CADXChange feed and heating sample P&ID",
+    "url": "https://cadxchange.net/resources/samples/process-and-instrumentation-diagram",
+    "download_url": "https://cadxchange.net/resources/samples/process-and-instrumentation-diagram/feed-heating-system/preview.png",
+    "license": "Publisher permits use and modification, including commercial use; retain attribution. Not an actual operating facility.",
+    "role": "Independent image extraction test; incompatible with the water-station hydraulic model",
+    "bytes": 209560,
+    "sha256": "89b2c35f2a62f3f447c62c2c1afc65bda536e45efc964a57962acc358a819055",
+    "downloaded_at": "2026-10-24"
+  },
+  {
+    "file": "CTOWN.INP",
+    "title": "BATADAL C-Town EPANET network",
+    "url": "https://www.batadal.net/data.html",
+    "download_url": "https://www.batadal.net/data/CTOWN.INP",
+    "license": "CC BY 4.0, BATADAL team",
+    "role": "External benchmark network, not the custom station",
+    "bytes": 116999,
+    "sha256": "9198b0bb43f551b29bfb550e206ff95f1df220118fc0068c7f130cec78d58d9e",
+    "downloaded_at": "2026-10-24"
+  },
+  {
+    "file": "BATADAL_dataset03.csv",
+    "title": "BATADAL normal-operation training dataset",
+    "url": "https://www.batadal.net/data.html",
+    "download_url": "https://www.batadal.net/data/BATADAL_dataset03.csv",
+    "license": "CC BY 4.0, BATADAL team",
+    "role": "Hourly simulation-generated SCADA benchmark; not calibrated station telemetry",
+    "bytes": 2940389,
+    "sha256": "8ca6cb851242254d2605b5a53ba3ba5009e2213a545d65396615f1ce0b426e1b",
+    "downloaded_at": "2026-10-24"
+  }
+]

@@ -1,0 +1,23 @@
+.env
+.env.*
+!.env.example
+.venv/
+node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+.cache/
+*.log
+artifacts/*.json
+artifacts/_video_tmp/
+data/reference/public-water-plan.pdf
+data/reference/public-water-plan.png
+frontend/test-results/
+frontend/playwright-report/
+*.tsbuildinfo
+artifacts/*.zip
+data/uploads/
+data/runtime/
+.DS_Store
+Hackaton context/

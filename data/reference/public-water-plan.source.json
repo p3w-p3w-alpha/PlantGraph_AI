@@ -1,0 +1,40 @@
+{
+  "title": "North Fork Special Service District Water Treatment Facility \u2014 Instrumentation P&ID, Tank & Booster Pumps",
+  "facility": "North Fork Special Service District water treatment facility, Steward Road, Sundance, Utah 84604",
+  "publisher": "State of Utah Public Notice Website",
+  "source_url": "https://www.utah.gov/pmn/files/1264041.pdf",
+  "retrieved_at": "2026-10-24",
+  "source_document_pages": 28,
+  "selected_page": 25,
+  "drawing_number": "I102",
+  "drawing_date": "2025-03-20",
+  "design_firms": [
+    "Aqua Engineering LLC",
+    "SKM Engineering Inc."
+  ],
+  "local_pdf": "/data/reference/public-water-plan.pdf",
+  "local_image": "/data/reference/public-water-plan.png",
+  "image_render": "Page 25 rendered with pdftoppm; longest edge 2600px, original drawing retained without content edits",
+  "sha256": "19b0ed5327716b9901738c86410c79a2a1c22a4c1543d39159f3eaeb66aed83d",
+  "usage_terms": "Publicly accessible government-hosted planning document. Drawing retains SKM Engineering Inc. copyright 2020 and Aqua Engineering attribution. No explicit open redistribution license identified. Source material is third-party reference evidence, excluded from this project MIT license; obtain permission before redistributing beyond applicable law.",
+  "provenance": "Actual publicly posted project design; not a fabricated example, not a verified as-built record.",
+  "test_purpose": "Out-of-template diagram extraction and uncertainty handling. Do not bind this design or its asset names to the custom station simulator.",
+  "visible_equipment": [
+    "10K storage tank",
+    "Three parallel motor-driven booster pumps",
+    "Tank level transmitter LT",
+    "Level high LSH and level low LSL switches",
+    "Suction and discharge pressure instruments PIT",
+    "Discharge flow instruments FIT and FE",
+    "VFD local control panel",
+    "PLC and SCADA signal layers",
+    "High-pressure and low-pressure distribution outlets"
+  ],
+  "known_ambiguities": [
+    "Many equipment tags are deliberately incomplete: P-, P-?, LT-, PIT-, FIT- and #### placeholders. Preserve missing identifiers as uncertain rather than inventing tags.",
+    "Filter vessels are an off-sheet connection to I101, not fully drawn on selected sheet I102.",
+    "Chlorine gas inlet is an off-sheet connection to I103; chemical treatment is not represented by the custom hydraulic station.",
+    "Some dimensions and control settings are absent from this P&ID. Simulation would require independent engineering parameters and review."
+  ],
+  "simulation_compatible": false
+}

@@ -1,0 +1,140 @@
+[TITLE]
+
+[JUNCTIONS]
+;ID                      Elevation       Demand Pattern                 
+ SUCTION                            0               0                            ;
+ DISCHARGE                          0               0                            ;
+ FILTER-IN                          0               0                            ;
+ FILTER-OUT                         0               0                            ;
+ VALVE-OUT                          0               0                            ;
+ ISOLATION-IN                       0               0                            ;
+
+[RESERVOIRS]
+;ID                                   Head                  Pattern
+ OUTLET                            20                            ;
+
+[TANKS]
+;ID                              Elevation           Init Level            Min Level            Max Level             Diameter           Min Volume Volume Curve         Overflow            
+ T-101                              0               4               1               6               6               0                                             ;
+
+[PIPES]
+;ID                   Node1                Node2                              Length             Diameter            Roughness           Minor Loss               Status
+ SUCTION-PIPE         T-101                SUCTION                            8             100             130               0                 Open   ;
+ DISCHARGE-PIPE       DISCHARGE            FILTER-IN                         20             100             130               0                 Open   ;
+ F-101                FILTER-IN            FILTER-OUT                       0.1             100             130              10                 Open   ;
+ DELIVERY-PIPE        VALVE-OUT            ISOLATION-IN                      25             100             130               0                 Open   ;
+ V-102                ISOLATION-IN         OUTLET                          26.9             100             130               0                 Open   ;
+
+[PUMPS]
+;ID                   Node1                Node2                Properties          
+ P-101A               SUCTION              DISCHARGE            HEAD     P-101A-CURVE           ;
+ P-101B               SUCTION              DISCHARGE            HEAD     P-101B-CURVE           ;
+
+[VALVES]
+;ID                   Node1                Node2                            Diameter Type              Setting           Minor Loss
+ V-101                FILTER-OUT           VALVE-OUT                        100 TCV                5               0   ;
+
+[TAGS]
+;type      name       tag       
+
+[DEMANDS]
+;ID        Demand     Pattern   
+
+[STATUS]
+;ID        Setting   
+P-101B     Closed    
+
+[PATTERNS]
+;ID        Multipliers
+
+[CURVES]
+;ID         X-Value      Y-Value     
+;PUMP: P-101A-CURVE
+ P-101A-CURVE     0.000000    45.000000   ;
+ P-101A-CURVE    13.888889    35.000000   ;
+ P-101A-CURVE    27.777778     5.000000   ;
+
+;PUMP: P-101B-CURVE
+ P-101B-CURVE     0.000000    45.000000   ;
+ P-101B-CURVE    13.888889    35.000000   ;
+ P-101B-CURVE    27.777778     5.000000   ;
+
+
+[CONTROLS]
+
+[RULES]
+
+[ENERGY]
+GLOBAL PRICE           0.0000
+
+[EMITTERS]
+;ID        Flow coefficient
+
+[QUALITY]
+
+[SOURCES]
+;Node      Type       Quality    Pattern   
+
+[REACTIONS]
+;Type           Pipe/Tank               Coefficient
+
+ ORDER BULK 1
+ ORDER TANK 1
+ ORDER WALL 1
+ GLOBAL BULK 0.0000    
+ GLOBAL WALL 0.0000    
+
+[MIXING]
+;Tank ID             Model Fraction
+
+[TIMES]
+DURATION             00:00:00
+HYDRAULIC TIMESTEP   00:01:00
+QUALITY TIMESTEP     00:06:00
+PATTERN TIMESTEP     01:00:00
+PATTERN START        00:00:00
+REPORT TIMESTEP      00:01:00
+REPORT START         00:00:00
+START CLOCKTIME      00:00:00 AM
+RULE TIMESTEP        00:06:00
+STATISTIC            NONE      
+
+[REPORT]
+
+[OPTIONS]
+UNITS                LPS                 
+HEADLOSS             H-W                 
+SPECIFIC GRAVITY     1
+VISCOSITY            1
+TRIALS               100
+ACCURACY             1e-05
+CHECKFREQ            2
+MAXCHECK             10
+UNBALANCED           STOP                
+PATTERN              1                   
+DEMAND MULTIPLIER    1
+EMITTER EXPONENT     0.5
+QUALITY              NONE                
+DIFFUSIVITY          1
+TOLERANCE            0.01
+
+[COORDINATES]
+;Node      X-Coord    Y-Coord   
+T-101               0.000000000          0.000000000
+SUCTION             0.000000000          0.000000000
+DISCHARGE           0.000000000          0.000000000
+FILTER-IN           0.000000000          0.000000000
+FILTER-OUT          0.000000000          0.000000000
+VALVE-OUT           0.000000000          0.000000000
+ISOLATION-IN          0.000000000          0.000000000
+OUTLET              0.000000000          0.000000000
+
+[VERTICES]
+;Link      X-Coord    Y-Coord   
+
+[LABELS]
+
+[BACKDROP]
+UNITS    NONE
+
+[END]
